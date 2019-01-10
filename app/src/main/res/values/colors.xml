@@ -5,13 +5,10 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="color_alizarin">#e74c3c</color>
-
-    <!--desing pallete-->
     <color name="glass">#EDFAFD</color>
     <color name="chill">#AED9DA</color>
     <color name="californian_coral">#3DDAD7</color>
     <color name="bondi_blue">#2A93D5</color>
     <color name="marina">#135589</color>
-    <!--desing pallete end-->
 
 </resources>

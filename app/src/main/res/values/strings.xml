@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Wallthereum</string>
+    <string name="navigation_drawer_close">closed</string>
+    <string name="navigation_drawer_open">open</string>
 </resources>

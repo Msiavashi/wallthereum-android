@@ -4,6 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@drawable/gradient1"
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteY="25dp">
 
+    <TextView
+        android:id="@+id/main_title"
+        android:layout_width="321dp"
+        android:layout_height="77dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/open_sans_semibold"
+        android:text="@string/main_title"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/glass"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="215dp"
+        android:layout_height="149dp"
+        android:layout_marginTop="32dp"
+        android:elevation="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ethereum" />
 </android.support.constraint.ConstraintLayout>

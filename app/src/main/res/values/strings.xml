@@ -4,4 +4,7 @@
     <string name="navigation_drawer_open">open</string>
     <string name="main_title">ETHEREUM WALLET</string>
     <string name="hint_password">password</string>
+    <string name="new_wallet_button_text">create wallet</string>
+    <string name="unlock_wallet_button">unlock wallet</string>
+    <string name="main_view_subscript">Don\'t have an account? Sign up!</string>
 </resources>

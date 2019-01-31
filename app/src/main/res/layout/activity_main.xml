@@ -13,7 +13,6 @@
         android:layout_width="321dp"
         android:layout_height="77dp"
         android:layout_marginTop="8dp"
-        android:autoText="false"
         android:fontFamily="@font/open_sans_semibold"
         android:text="@string/main_title"
         android:textAlignment="center"
@@ -39,6 +38,9 @@
         app:srcCompat="@drawable/ethereum" />
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -57,4 +59,40 @@
             android:textColor="@color/white"
             android:textColorLink="@color/californian_coral" />
     </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/new_wallet_button"
+        android:layout_width="150dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="18dp"
+        android:elevation="5dp"
+        android:text="@string/new_wallet_button_text"
+        android:backgroundTint="@color/glass"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="202dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/unlock_wallet_button"
+        android:textStyle="bold|italic"
+        android:backgroundTint="@color/bondi_blue"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_wallet_button" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/main_view_subscript"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

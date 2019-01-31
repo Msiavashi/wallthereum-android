@@ -3,4 +3,5 @@
     <string name="navigation_drawer_close">closed</string>
     <string name="navigation_drawer_open">open</string>
     <string name="main_title">ETHEREUM WALLET</string>
+    <string name="hint_password">password</string>
 </resources>

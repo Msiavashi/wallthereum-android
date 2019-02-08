@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ethereum_networks_addresses">
+        <item name="main net">https://mainnet.infura.io/</item>
+        <item name="kovan">https://kovan.infura.io/</item>
+        <item name="rinkeby">https://rinkeby.infura.io/</item>
+        <item name="ropsten">https://ropsten.infura.io/</item>
+    </string-array>
+</resources>

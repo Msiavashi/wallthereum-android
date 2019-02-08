@@ -7,4 +7,9 @@
     <string name="new_wallet_button_text">create wallet</string>
     <string name="unlock_wallet_button">unlock wallet</string>
     <string name="main_view_subscript">Don\'t have an account? Sign up!</string>
+    <string name="invite">Invite</string>
+    <string name="backup">Backup keystores</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="exit">Exit</string>
 </resources>

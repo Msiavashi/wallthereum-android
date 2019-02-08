@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="networks_names">
+        <item>Main Net</item>
+        <item>Kovan</item>
+        <item>Rinkeby</item>
+        <item>Ropsten</item>
+    </string-array>
+</resources>

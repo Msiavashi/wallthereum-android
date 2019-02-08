@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="ethereum_networks_chain_id">
+        <item name="main net">1</item>
+        <item name="kovan">42</item>
+        <item name="rinkeby">2</item>
+        <item name="ropsten">3</item>
+    </integer-array>
+</resources>

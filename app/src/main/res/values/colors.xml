@@ -6,9 +6,10 @@
     <color name="colorAccent">#D81B60</color>
     <color name="color_alizarin">#e74c3c</color>
     <color name="glass">#EDFAFD</color>
-    <color name="chill">#AED9DA</color>
+    <color name="chill">#aed9da</color>
     <color name="californian_coral">#3DDAD7</color>
     <color name="bondi_blue">#46a5e0</color>
     <color name="marina">#5f14c1</color>
+    <color name="network_spinner_green">#c0ca33</color>
 
 </resources>

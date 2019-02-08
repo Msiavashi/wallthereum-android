@@ -1,20 +1,22 @@
 package com.wallthereum.wallthereum;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.widget.FrameLayout;
 
 public class BaseActivity extends AppCompatActivity {
+
     private static final String TAG = "BaseActivity";
+    private static Context mContext;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        mContext = this;
         super.onCreate(savedInstanceState);
     }
 
@@ -40,5 +42,14 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
+//    private void initNetworkSpinner(){
+//        MaterialSpinner networkDropDown = (MaterialSpinner) findViewById(R.id.network_spinner);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item,
+//                Network.getNetwork().getNames());
+//        networkDropDown.setAdapter(adapter);
+//    }
 
+    public static Context getContext(){
+        return mContext;
+    }
 }

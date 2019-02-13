@@ -13,4 +13,12 @@
     <string name="about">About</string>
     <string name="exit">Exit</string>
     <string name="drawer_header_subscript">www.wallthereum.com</string>
+    <string name="positive_button">okay</string>
+    <string name="info_title">Read CAREFULY</string>
+    <string name="info_message">this is for test</string>
+    <string name="no_content">No Content Available</string>
+    <string name="accept">accept</string>
+    <string name="reject">reject</string>
+    <string name="warning">warning</string>
+    <string name="creation_warning">Note that your wallet\'s Private Key could not be recovered if lost, which means you will loose all your deposit. please save your private key and keystore. upon them all make sure you hit the backup button when loggen in.</string>
 </resources>

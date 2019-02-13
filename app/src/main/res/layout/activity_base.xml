@@ -57,4 +57,7 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu" />
+
+    <include layout="@layout/loading"/>
 </androidx.drawerlayout.widget.DrawerLayout>
+

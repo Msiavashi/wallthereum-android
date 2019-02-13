@@ -44,15 +44,16 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/warning_image_view"
             android:layout_width="104dp"
             android:layout_height="70dp"
+            android:layout_marginTop="3dp"
             android:tint="@color/design_default_color_on_secondary"
             app:layout_constraintBottom_toTopOf="@+id/textView3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/stat_sys_warning" />
+            app:srcCompat="@drawable/round_warning_black_48dp" />
 
         <TextView
             android:id="@+id/textView3"
@@ -70,7 +71,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            app:layout_constraintTop_toBottomOf="@+id/warning_image_view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,7 +81,6 @@
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toTopOf="@+id/reject_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView

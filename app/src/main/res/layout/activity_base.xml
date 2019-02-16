@@ -58,6 +58,32 @@
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu" />
 
-    <include layout="@layout/loading"/>
+    <!--<com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar-->
+        <!--android:id="@+id/progress"-->
+        <!--style="@style/Widget.AppCompat.ProgressBar"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:radius="5dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:color="#8C2323"-->
+        <!--app:dd_numDots="3"-->
+        <!--app:dd_scaleMultiplier="1.5"-->
+        <!--app:dd_animationDuration="500"-->
+        <!--app:dd_horizontalSpacing="4dp"-->
+        <!--/>-->
+
+    <ProgressBar
+        android:id="@+id/loading"
+        style="@android:style/Widget.DeviceDefault.ProgressBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@color/dialogplus_black_overlay"
+        android:indeterminate="true"
+        android:clickable="true"
+        android:indeterminateDrawable="@drawable/progressbar_circular"
+        android:visibility="invisible" />
+
 </androidx.drawerlayout.widget.DrawerLayout>
 

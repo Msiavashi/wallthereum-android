@@ -3,18 +3,19 @@ package com.wallthereum.wallthereum;
 import com.google.android.material.textfield.TextInputEditText;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnItemClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.wallthereum.wallthereum.Exceptions.ConnectionException;
+import com.wallthereum.wallthereum.coin.Ethereum.Network;
+import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-
-import java.net.ContentHandler;
-
-import androidx.core.view.GravityCompat;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class MainActivity extends BaseActivity {
 
@@ -29,29 +30,44 @@ public class MainActivity extends BaseActivity {
     public void onClickNewWallet(View view) {
         TextInputEditText text = (TextInputEditText) findViewById(R.id.main_password_field);
         String password = text.getText().toString();
-        NewWallet newWallet = new NewWallet(password);
 
+        if (password.isEmpty()){
+            Toast.makeText(this, "password empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        final Wallet newWallet = new Wallet(password);
         DialogPlus dialog = DialogPlus.newDialog(this)
                 .setGravity(Gravity.CENTER)
                 .setContentHolder(new ViewHolder(R.layout.new_wallet_alert))
                 .setCancelable(true)
-                .setInAnimation(R.anim.fade_in_center)
                 .setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(DialogPlus dialog, View view) {
+
                         switch (view.getId()){
                             case R.id.reject_button:
                                 dialog.dismiss();
                                 break;
                             case R.id.accept_button:
-                                View progressOverlay = findViewById(R.id.progress_overlay);
-                                progressOverlay.setVisibility(View.VISIBLE);
+                                dialog.dismiss();
+                                ProgressBar progressBar = findViewById(R.id.loading);
+                                progressBar.setVisibility(View.VISIBLE);
 
-
-//                                dialog.dismiss();
-//                                Intent intent = new Intent(MainActivity.this, Wallet.class);
-//                                startActivity(intent);
+                                if(isInternetConnected()){
+                                    try {
+                                        newWallet.create();
+                                        Intent intent = new Intent(MainActivity.this, WalletActivity.class);
+                                        progressBar.setVisibility(View.GONE);
+                                        startActivity(intent);
+                                        Toast.makeText(MainActivity.this, "Created", Toast.LENGTH_SHORT).show();
+                                    } catch (ConnectionException e) {
+                                        Toast.makeText(MainActivity.this, "Network Problem", Toast.LENGTH_SHORT).show();
+                                    }
+                                }else {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(MainActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                                }
                                 break;
                             default:
                                 break;
@@ -60,5 +76,16 @@ public class MainActivity extends BaseActivity {
                 })
                 .create();
         dialog.show();
+    }
+
+    private boolean isInternetConnected(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            return true;
+        }
+        else
+            return false;
     }
 }

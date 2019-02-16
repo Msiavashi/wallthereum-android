@@ -1,12 +1,14 @@
 //TODO: add password validation
 
-package com.wallthereum.wallthereum;
+package com.wallthereum.wallthereum.coin.Ethereum;
 
-public class NewWallet {
+import com.wallthereum.wallthereum.Exceptions.ConnectionException;
+
+public class Wallet {
     private String mPassword;
 
 
-    public NewWallet(String password){
+    public Wallet(String password){
         this.mPassword = password;
     }
 
@@ -22,7 +24,11 @@ public class NewWallet {
 
     }
 
-    public void create() {
+    public void create() throws ConnectionException {
+        
+        if(!Network.getNetwork().isConnected()){
+            Network.getNetwork().connect();
+        }
 
     }
     public String getPassword() {

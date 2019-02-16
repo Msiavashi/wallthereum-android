@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class Wallet extends BaseActivity {
+public class WalletActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

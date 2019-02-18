@@ -21,4 +21,9 @@
     <string name="reject">reject</string>
     <string name="warning">warning</string>
     <string name="creation_warning">Note that your wallet\'s Private Key could not be recovered if lost, which means you will loose all your deposit. please save your private key and keystore. upon them all make sure you hit the backup button when loggen in.</string>
+    <string name="no_transactions">no transaction yet</string>
+    <string name="receive">Receive</string>
+    <string name="send">Send</string>
+    <string name="private_key">private key</string>
+    <string name="keystore">keystore</string>
 </resources>

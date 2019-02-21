@@ -65,8 +65,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:background="@color/dialogplus_black_overlay"
-        android:indeterminate="true"
         android:clickable="true"
+        android:indeterminate="true"
         android:indeterminateDrawable="@drawable/progressbar_circular"
         android:visibility="invisible" />
 

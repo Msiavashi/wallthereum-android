@@ -17,6 +17,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.web3j.crypto.CipherException;
+
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+
 public class MainActivity extends BaseActivity {
 
     private final String TAG = "MainActivity";
@@ -29,14 +36,14 @@ public class MainActivity extends BaseActivity {
 
     public void onClickNewWallet(View view) {
         TextInputEditText text = (TextInputEditText) findViewById(R.id.main_password_field);
-        String password = text.getText().toString();
+        final String password = text.getText().toString();
 
         if (password.isEmpty()){
             Toast.makeText(this, "password empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        final Wallet newWallet = new Wallet(password);
+        final Wallet wallet = Wallet.getWallet();
         DialogPlus dialog = DialogPlus.newDialog(this)
                 .setGravity(Gravity.CENTER)
                 .setContentHolder(new ViewHolder(R.layout.new_wallet_alert))
@@ -56,13 +63,24 @@ public class MainActivity extends BaseActivity {
 
                                 if(isInternetConnected()){
                                     try {
-                                        newWallet.create();
+                                        String filename = wallet.create(password);
+                                        wallet.unlockWallet(filename, password);
                                         Intent intent = new Intent(MainActivity.this, WalletActivity.class);
                                         progressBar.setVisibility(View.GONE);
                                         startActivity(intent);
                                         Toast.makeText(MainActivity.this, "Created", Toast.LENGTH_SHORT).show();
                                     } catch (ConnectionException e) {
                                         Toast.makeText(MainActivity.this, "Network Problem", Toast.LENGTH_SHORT).show();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    } catch (NoSuchAlgorithmException e) {
+                                        e.printStackTrace();
+                                    } catch (InvalidAlgorithmParameterException e) {
+                                        e.printStackTrace();
+                                    } catch (NoSuchProviderException e) {
+                                        e.printStackTrace();
+                                    } catch (CipherException e) {
+                                        e.printStackTrace();
                                     }
                                 }else {
                                     progressBar.setVisibility(View.GONE);

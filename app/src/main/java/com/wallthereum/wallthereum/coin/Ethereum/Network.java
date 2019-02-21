@@ -14,6 +14,8 @@ public class Network {
     private String mName = "kovan";
     private int mChainId = 42;
     private String mAddress = "https://kovan.infura.io/v3/0f6aa93d937241f1aa67cb7ff365ce77";
+
+
     private Web3j mConnection;
 
     private Network(){}
@@ -30,6 +32,9 @@ public class Network {
         }
     }
 
+    public Web3j getmConnection() {
+        return mConnection;
+    }
     private static class NetworkHolder {
         private static final Network NETWORK = new Network();
     }

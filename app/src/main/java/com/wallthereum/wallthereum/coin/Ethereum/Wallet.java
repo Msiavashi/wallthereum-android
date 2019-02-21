@@ -3,39 +3,60 @@
 package com.wallthereum.wallthereum.coin.Ethereum;
 
 import com.wallthereum.wallthereum.Exceptions.ConnectionException;
+import com.wallthereum.wallthereum.MainActivity;
+
+import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.ECKeyPair;
+import org.web3j.crypto.WalletUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 
 public class Wallet {
-    private String mPassword;
+    private Credentials credentials;
+    private Wallet(){}
 
-
-    public Wallet(String password){
-        this.mPassword = password;
+    private static class WalletHolder {
+        private static Wallet wallet = new Wallet();
     }
 
-    public void showWarningDialog() {
-
+    public static Wallet getWallet(){
+        return WalletHolder.wallet;
     }
 
-    public void onWarningDeclined() {
+    public String create(String password) throws ConnectionException, NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException, CipherException, IOException {
+        /*
+            returns credentials filename
 
-    }
-
-    public void onWarningAccepted() {
-
-    }
-
-    public void create() throws ConnectionException {
-        
+         */
         if(!Network.getNetwork().isConnected()){
             Network.getNetwork().connect();
         }
 
-    }
-    public String getPassword() {
-        return mPassword;
+//        creating the wallet instance
+        File internalStorage = MainActivity.getContext().getFilesDir();
+        File path = new File(internalStorage.getPath() + "/wallets/");
+        if(!path.exists()){
+            path.mkdir();
+        }
+        String filename = WalletUtils.generateNewWalletFile(password, new File(internalStorage, "wallets"), false);
+        return filename;
     }
 
-    public void setPassword(String Password) {
-        this.mPassword = mPassword;
+    public String getAddress(){
+        return this.credentials.getAddress();
+    }
+
+    public ECKeyPair getEcKeyPair(){
+        return this.credentials.getEcKeyPair();
+    }
+
+    public void unlockWallet(String filename, String password) throws IOException, CipherException {
+        this.credentials = WalletUtils.loadCredentials(password, MainActivity.getContext().getFilesDir().getPath() + "/wallets/" + filename);
     }
 }

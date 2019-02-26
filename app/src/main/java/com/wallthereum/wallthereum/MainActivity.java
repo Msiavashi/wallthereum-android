@@ -5,12 +5,12 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.wallthereum.wallthereum.Exceptions.ConnectionException;
-import com.wallthereum.wallthereum.coin.Ethereum.Network;
 import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
 
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -57,35 +57,52 @@ public class MainActivity extends BaseActivity {
                                 dialog.dismiss();
                                 break;
                             case R.id.accept_button:
+                                findViewById(R.id.loading).setVisibility(View.VISIBLE);
                                 dialog.dismiss();
-                                ProgressBar progressBar = findViewById(R.id.loading);
-                                progressBar.setVisibility(View.VISIBLE);
 
-                                if(isInternetConnected()){
-                                    try {
-                                        String filename = wallet.create(password);
-                                        wallet.unlockWallet(filename, password);
-                                        Intent intent = new Intent(MainActivity.this, WalletActivity.class);
-                                        progressBar.setVisibility(View.GONE);
-                                        startActivity(intent);
-                                        Toast.makeText(MainActivity.this, "Created", Toast.LENGTH_SHORT).show();
-                                    } catch (ConnectionException e) {
-                                        Toast.makeText(MainActivity.this, "Network Problem", Toast.LENGTH_SHORT).show();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    } catch (NoSuchAlgorithmException e) {
-                                        e.printStackTrace();
-                                    } catch (InvalidAlgorithmParameterException e) {
-                                        e.printStackTrace();
-                                    } catch (NoSuchProviderException e) {
-                                        e.printStackTrace();
-                                    } catch (CipherException e) {
-                                        e.printStackTrace();
-                                    }
-                                }else {
-                                    progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(MainActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
-                                }
+                                AsyncTask.execute(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                      //TODO your background code
+                                       if(isInternetConnected()){
+                                           try {
+                                               String filename = wallet.create(password);
+                                               wallet.unlockWallet(filename, password);
+                                               Intent intent = new Intent(MainActivity.this, WalletActivity.class);
+                                               startActivity(intent);
+
+                                               runOnUiThread(new Runnable() {
+                                                   @Override
+                                                   public void run() {
+                                                       findViewById(R.id.loading).setVisibility(View.GONE);
+                                                       Toast.makeText(MainActivity.this, "Created", Toast.LENGTH_SHORT).show();
+                                                   }
+                                               });
+
+                                           } catch (ConnectionException e) {
+                                               Toast.makeText(MainActivity.this, "Network Problem", Toast.LENGTH_SHORT).show();
+                                           } catch (IOException e) {
+                                               e.printStackTrace();
+                                           } catch (NoSuchAlgorithmException e) {
+                                               e.printStackTrace();
+                                           } catch (InvalidAlgorithmParameterException e) {
+                                               e.printStackTrace();
+                                           } catch (NoSuchProviderException e) {
+                                               e.printStackTrace();
+                                           } catch (CipherException e) {
+                                               e.printStackTrace();
+                                           }
+                                       }else {
+                                           runOnUiThread(new Runnable() {
+                                               @Override
+                                               public void run() {
+                                                   findViewById(R.id.loading).setVisibility(View.GONE);
+                                                   Toast.makeText(MainActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                                               }
+                                           });
+                                       }
+                                   }
+                                });
                                 break;
                             default:
                                 break;

@@ -2,12 +2,20 @@ package com.wallthereum.wallthereum;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.joaquimley.faboptions.FabOptions;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.wallthereum.wallthereum.coin.Ethereum.Network;
 import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
 
@@ -76,6 +84,33 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
             case R.id.send_button:
                 break;
             case R.id.receive_button:
+                DialogPlus dialogPlus = DialogPlus.newDialog(this)
+                    .setGravity(Gravity.CENTER)
+                    .setCancelable(true)
+                    .setContentHolder(new ViewHolder(R.layout.receive_view))
+                    .setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(DialogPlus dialog, View view) {
+                            switch (view.getId()){
+                                case R.id.copy_button:
+//                                    copy wallet address to clipboard
+                                    final ClipboardManager clipboardManager = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+                                    ClipData clipData = ClipData.newPlainText("wallet address", Wallet.getWallet().getAddress());
+                                    clipboardManager.setPrimaryClip(clipData);
+                                    Toast.makeText(WalletActivity.this, "copied", Toast.LENGTH_SHORT).show();
+                                    break;
+                                case R.id.reject_button:
+                                    dialog.dismiss();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    })
+                    .create();
+                dialogPlus.show();
+                EditText editText = findViewById(R.id.wallet_address_textarea);
+                editText.setText(Wallet.getWallet().getAddress().replace("0x", ""));
                 break;
             case R.id.keystore_button:
                 break;

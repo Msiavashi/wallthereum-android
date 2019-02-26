@@ -26,4 +26,7 @@
     <string name="send">Send</string>
     <string name="private_key">private key</string>
     <string name="keystore">keystore</string>
+    <string name="address">Your wallet address</string>
+    <string name="close">close</string>
+    <string name="copy">copy</string>
 </resources>

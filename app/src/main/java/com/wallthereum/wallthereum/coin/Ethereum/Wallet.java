@@ -31,7 +31,7 @@ public class Wallet {
 
     public String create(String password) throws ConnectionException, NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException, CipherException, IOException {
         /*
-            returns credentials filename
+            returns credentials path
 
          */
         if(!Network.getNetwork().isConnected()){
@@ -45,7 +45,8 @@ public class Wallet {
             path.mkdir();
         }
         String filename = WalletUtils.generateNewWalletFile(password, new File(internalStorage, "wallets"), false);
-        return filename;
+        String fullPath = internalStorage.getAbsolutePath() + "/wallets/" + filename;
+        return fullPath;
     }
 
     public String getAddress(){
@@ -56,7 +57,7 @@ public class Wallet {
         return this.credentials.getEcKeyPair();
     }
 
-    public void unlockWallet(String filename, String password) throws IOException, CipherException {
-        this.credentials = WalletUtils.loadCredentials(password, MainActivity.getContext().getFilesDir().getPath() + "/wallets/" + filename);
+    public void unlockWallet(String filePath, String password) throws IOException, CipherException {
+        this.credentials = WalletUtils.loadCredentials(password, filePath);
     }
 }

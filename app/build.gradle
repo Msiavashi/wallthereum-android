@@ -33,4 +33,5 @@ dependencies {
     implementation 'com.orhanobut:dialogplus:1.11@aar'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.github.joaquimley:faboptions:1.2.0'
+    implementation 'com.github.angads25:filepicker:1.1.1'
 }

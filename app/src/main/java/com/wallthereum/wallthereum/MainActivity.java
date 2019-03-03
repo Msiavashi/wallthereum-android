@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity {
                 if(isInternetConnected()){
                     try {
                         String path = wallet.create(password);
-                        wallet.unlockWallet(path, password);
+                        wallet.unlockKeystore(path, password);
                         Intent intent = new Intent(MainActivity.this, WalletActivity.class);
                         startActivity(intent);
 
@@ -149,6 +149,7 @@ public class MainActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case 0:     //options[0]
+                        unlockWithPK();
                         break;
                     case 1:     //options[1]
                         getKeystoreFile();
@@ -161,6 +162,54 @@ public class MainActivity extends BaseActivity {
             }
         });
         builder.show();
+    }
+
+    private void unlockWithPK() {
+        if(!isInternetConnected()){
+            Toast.makeText(this, "connection error", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText edittext = new EditText(this);
+        edittext.setInputType(InputType.TYPE_CLASS_TEXT);
+        edittext.setHint(R.string.hint_private_key);
+        alert.setTitle(R.string.private_key_dialog_title);
+        alert.setView(edittext);
+        alert.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                findViewById(R.id.loading).setVisibility(View.VISIBLE);
+                final String pk = edittext.getText().toString();
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Wallet.getWallet().unlockPrivateKey(pk);
+                            Intent intent = new Intent(MainActivity.this, WalletActivity.class);
+                            startActivity(intent);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    findViewById(R.id.loading).setVisibility(View.GONE);
+                                    Toast.makeText(MainActivity.this, R.string.wallet_unlock_success, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } catch (ConnectionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        });
+
+        alert.setNegativeButton(R.string.reject, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // what ever you want to do with No option.
+                dialog.cancel();
+            }
+        });
+
+        alert.show();
     }
 
     private void getKeystoreFile(){
@@ -185,6 +234,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void unlockKeystore(final String filePath) {
+        if(!isInternetConnected()){
+            Toast.makeText(this, "connection error", Toast.LENGTH_SHORT).show();
+            return;
+        }
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText edittext = new EditText(this);
         edittext.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -199,8 +252,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void run() {
                         try {
-                            Wallet.getWallet().unlockWallet(filePath, password);
-                            Log.d(TAG, "salam");
+                            Wallet.getWallet().unlockKeystore(filePath, password);
                             Intent intent = new Intent(MainActivity.this, WalletActivity.class);
                             startActivity(intent);
                             runOnUiThread(new Runnable() {
@@ -215,6 +267,8 @@ public class MainActivity extends BaseActivity {
                         } catch (CipherException e) {
                             e.printStackTrace();
                             Toast.makeText(MainActivity.this, "Cipher Errror", Toast.LENGTH_SHORT).show();
+                        } catch (ConnectionException e) {
+                            e.printStackTrace();
                         }
                     }
                 });

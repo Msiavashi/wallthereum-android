@@ -57,7 +57,17 @@ public class Wallet {
         return this.credentials.getEcKeyPair();
     }
 
-    public void unlockWallet(String filePath, String password) throws IOException, CipherException {
+    public void unlockKeystore(String filePath, String password) throws IOException, CipherException, ConnectionException {
+        if(!Network.getNetwork().isConnected()){
+            Network.getNetwork().connect();
+        }
         this.credentials = WalletUtils.loadCredentials(password, filePath);
+    }
+
+    public void unlockPrivateKey(String pk) throws ConnectionException {
+        if(!Network.getNetwork().isConnected()){
+            Network.getNetwork().connect();
+        }
+        this.credentials = Credentials.create(pk);
     }
 }

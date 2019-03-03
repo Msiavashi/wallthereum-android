@@ -35,4 +35,6 @@
     <string name="sync">sync account with google</string>
     <string name="wallet_unlock_success">unlocking successful</string>
     <string name="select_file">Select a keystore file</string>
+    <string name="hint_private_key">private key</string>
+    <string name="private_key_dialog_title">Private Key</string>
 </resources>

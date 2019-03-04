@@ -39,7 +39,6 @@ public class BaseActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         toggle.syncState();
-
     }
 
 //    private void initNetworkSpinner(){

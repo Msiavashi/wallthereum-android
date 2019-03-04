@@ -2,9 +2,14 @@ package com.wallthereum.wallthereum;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -48,16 +53,11 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         ProgressBar loading = findViewById(R.id.loading);
         loading.setVisibility(View.VISIBLE);
 
-        Web3j connection = Network.getNetwork().getmConnection();
         try {
-            EthGetBalance ethGetBalance = connection
-                    .ethGetBalance(Wallet.getWallet().getAddress(), DefaultBlockParameterName.LATEST)
-                    .sendAsync()
-                    .get();
-            BigInteger wei = ethGetBalance.getBalance();
+            BigInteger wei = Wallet.getWallet().getBalance();
             Convert.fromWei(wei.toString(), Convert.Unit.ETHER);        //converting wei to ether
             TextView balanceView = (TextView) findViewById(R.id.balance_view);
-            balanceView.setText(wei.toString() + " ETHER");
+            balanceView.setText(wei.toString() + " ETHER(s)");
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -82,43 +82,79 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
          */
         switch (view.getId()){
             case R.id.send_button:
+                showTransactionDialog();
                 break;
             case R.id.receive_button:
-                DialogPlus dialogPlus = DialogPlus.newDialog(this)
-                    .setGravity(Gravity.CENTER)
-                    .setCancelable(true)
-                    .setContentHolder(new ViewHolder(R.layout.receive_view))
-                    .setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(DialogPlus dialog, View view) {
-                            switch (view.getId()){
-                                case R.id.copy_button:
-//                                    copy wallet address to clipboard
-                                    final ClipboardManager clipboardManager = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                                    ClipData clipData = ClipData.newPlainText("wallet address", Wallet.getWallet().getAddress());
-                                    clipboardManager.setPrimaryClip(clipData);
-                                    Toast.makeText(WalletActivity.this, "copied", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case R.id.reject_button:
-                                    dialog.dismiss();
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    })
-                    .create();
-                dialogPlus.show();
-                EditText editText = findViewById(R.id.wallet_address_textarea);
-                editText.setText(Wallet.getWallet().getAddress().replace("0x", ""));
+                showAddressDialog();
                 break;
             case R.id.keystore_button:
                 break;
             case R.id.private_key_button:
+                showPKDialog();
                 break;
             default:
                 break;
         }
+    }
+
+    private void showTransactionDialog() {
+        Intent intent = new Intent(WalletActivity.this, SendTransactionActivity.class);
+        startActivity(intent);
+    }
+
+    private void showToast(String message){
+        Log.d(TAG, message);
+        Toast.makeText(WalletActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showAddressDialog() {
+        final EditText editText = new EditText(this);
+        editText.setText(Wallet.getWallet().getAddress().replace("0x", ""));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.address)
+                .setView(editText)
+                .setNegativeButton(R.string.reject, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton(R.string.copy, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        copyToClipBoard(Wallet.getWallet().getAddress(), "address");
+                        showToast(getResources().getString(R.string.copied));
+                    }
+                });
+        builder.show();
+    }
+
+    private void showPKDialog() {
+        final EditText editText = new EditText(this);
+        editText.setText(Wallet.getWallet().getEcKeyPair().getPrivateKey().toString());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.private_key_dialog_title)
+                .setView(editText)
+                .setNegativeButton(R.string.reject, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton(R.string.copy, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        showToast(getResources().getString(R.string.copied));
+                        copyToClipBoard(editText.getText().toString(), "pk");
+                    }
+                });
+        builder.show();
+    }
+
+    private void copyToClipBoard(String data, String label) {
+        final ClipboardManager clipboardManager = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText(label, data);
+        clipboardManager.setPrimaryClip(clipData);
     }
 
     private void initTransactionsHistory(){

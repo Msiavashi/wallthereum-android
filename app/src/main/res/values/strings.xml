@@ -37,4 +37,12 @@
     <string name="select_file">Select a keystore file</string>
     <string name="hint_private_key">private key</string>
     <string name="private_key_dialog_title">Private Key</string>
+    <string name="copied">copied</string>
+    <string name="balance">Balance</string>
+    <string name="transaction_title">Create New Transaction</string>
+    <string name="receiver_address_hint">receiver address</string>
+    <string name="amount_hint">amount to send (ether)</string>
+    <string name="gas_limit_hint">gas limit ( min = 21000 )</string>
+    <string name="data_hint">data</string>
+    <string name="create_transaction_button">create transaction</string>
 </resources>

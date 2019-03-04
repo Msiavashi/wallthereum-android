@@ -4,16 +4,22 @@ package com.wallthereum.wallthereum.coin.Ethereum;
 import com.wallthereum.wallthereum.BaseActivity;
 import com.wallthereum.wallthereum.Exceptions.ConnectionException;
 import com.wallthereum.wallthereum.R;
+
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.Web3jFactory;
 import org.web3j.protocol.http.HttpService;
 
 import java.io.IOException;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class Network {
     private String mName = "kovan";
     private int mChainId = 42;
     private String mAddress = "https://kovan.infura.io/v3/0f6aa93d937241f1aa67cb7ff365ce77";
+    private String gasStationAPI = "https://ethgasstation.info/json/ethgasAPI.json";
 
 
     private Web3j mConnection;
@@ -35,6 +41,17 @@ public class Network {
     public Web3j getmConnection() {
         return mConnection;
     }
+
+    public String retrieveGasPrice() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(this.gasStationAPI)
+                .build();
+        try(Response response = client.newCall(request).execute()){
+            return response.body().string();
+        }
+    }
+
     private static class NetworkHolder {
         private static final Network NETWORK = new Network();
     }

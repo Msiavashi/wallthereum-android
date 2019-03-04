@@ -9,17 +9,31 @@ import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.concurrent.ExecutionException;
 
 public class Wallet {
     private Credentials credentials;
     private Wallet(){}
+
+    public BigInteger getBalance() throws ExecutionException, InterruptedException {
+        Web3j connection = Network.getNetwork().getmConnection();
+        EthGetBalance ethGetBalance = connection
+                .ethGetBalance(Wallet.getWallet().getAddress(), DefaultBlockParameterName.LATEST)
+                .sendAsync()
+                .get();
+        return ethGetBalance.getBalance();
+    }
 
     private static class WalletHolder {
         private static Wallet wallet = new Wallet();

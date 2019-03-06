@@ -84,4 +84,9 @@ public class Wallet {
         }
         this.credentials = Credentials.create(pk);
     }
+
+    public Credentials getCredentials() {
+        return credentials;
+    }
+
 }

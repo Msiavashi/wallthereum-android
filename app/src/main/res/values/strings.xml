@@ -42,7 +42,12 @@
     <string name="transaction_title">Create New Transaction</string>
     <string name="receiver_address_hint">receiver address</string>
     <string name="amount_hint">amount to send (ether)</string>
-    <string name="gas_limit_hint">gas limit ( min = 21000 )</string>
+    <string name="gas_limit_hint">gas limit</string>
     <string name="data_hint">data</string>
     <string name="create_transaction_button">create transaction</string>
+    <string name="transaction_form_title" >Transfer Information</string>
+    <string name="gas_section_title">Gas</string>
+    <string name="gas_price">Gas price</string>
+    <string name="transaction_fee">Transaction fee</string>
+    <string name="gas_limit_error">minimum gas limit is 21000</string>
 </resources>

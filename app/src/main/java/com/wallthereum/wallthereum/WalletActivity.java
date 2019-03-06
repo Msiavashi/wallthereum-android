@@ -57,7 +57,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
             BigInteger wei = Wallet.getWallet().getBalance();
             Convert.fromWei(wei.toString(), Convert.Unit.ETHER);        //converting wei to ether
             TextView balanceView = (TextView) findViewById(R.id.balance_view);
-            balanceView.setText(wei.toString() + " ETHER(s)");
+            balanceView.setText(wei.toString() + " Ether(s)");
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

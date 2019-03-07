@@ -80,6 +80,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/receiver_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/receiver_address_hint" />
@@ -98,6 +99,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/amount_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/amount_hint" />

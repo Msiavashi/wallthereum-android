@@ -50,4 +50,11 @@
     <string name="gas_price">Gas price</string>
     <string name="transaction_fee">Transaction fee</string>
     <string name="gas_limit_error">minimum gas limit is 21000</string>
+    <string name="send_transaction_warning">Transaction could not be reversed ! Are you sure you want to proceed ?</string>
+    <string name="sender">Sender</string>
+    <string name="receier">Receiver</string>
+    <string name="amount">Amount</string>
+    <string name="estimated_fee">Estimated fee</string>
+    <string name="send_agreement_checkbox">i have read terms, and accept to send</string>
+    <string name="transaction_sent_toast">transaction sent successfuly</string>
 </resources>

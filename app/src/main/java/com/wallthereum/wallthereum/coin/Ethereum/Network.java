@@ -1,6 +1,8 @@
 package com.wallthereum.wallthereum.coin.Ethereum;
 
 
+import android.util.Log;
+
 import com.wallthereum.wallthereum.BaseActivity;
 import com.wallthereum.wallthereum.Exceptions.ConnectionException;
 import com.wallthereum.wallthereum.R;
@@ -10,14 +12,19 @@ import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.Web3jFactory;
 import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.Transfer;
+import org.web3j.utils.Convert;
 import org.web3j.utils.Numeric;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -97,7 +104,7 @@ public class Network {
         return mAddress;
     }
 
-    public void sendTransaction(BigInteger value, String toAddr, String fromAddr, String privateKey, BigInteger gasLimit, BigInteger gasPrice) throws IOException {
+    public void sendTransaction(BigInteger value, String toAddr, String fromAddr, BigInteger gasLimit, BigInteger gasPrice) throws IOException {
 //        getting nonce value
         EthGetTransactionCount ethGetTransactionCount = this.getmConnection().ethGetTransactionCount(fromAddr, DefaultBlockParameterName.LATEST).send();
         BigInteger nonce = ethGetTransactionCount.getTransactionCount();
@@ -106,10 +113,15 @@ public class Network {
         RawTransaction rawTransaction = RawTransaction.createEtherTransaction(nonce, gasPrice, gasLimit, toAddr, value);
 
 //        sigining raw txn
-        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, Wallet.getWallet().getCredentials());
+        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, (byte) getmChainId(), Wallet.getWallet().getCredentials());
         String hexValue =   Numeric.toHexString(signedMessage);
 
 //        sending signed transaction
-        EthSendTransaction ethSendTransaction = this.getmConnection().ethSendRawTransaction(hexValue).send();
+        try {
+            TransactionReceipt transactionReceipt = Transfer.sendFunds(
+            mConnection, Wallet.getWallet().getCredentials(), toAddr, new BigDecimal(value), Convert.Unit.WEI).send();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

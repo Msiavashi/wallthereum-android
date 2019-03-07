@@ -6,17 +6,25 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.wallthereum.wallthereum.coin.Ethereum.Network;
 import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
 
@@ -35,10 +43,21 @@ public class SendTransactionActivity extends AppCompatActivity {
     private HashMap<String, BigDecimal> mGasSpinnerData;
     private final String TAG = "SendTransactionActivity";
     private EditText mGasLimitTextEdit;
+    private BigInteger mGasLimit;
+    private BigDecimal mGasPrice;
+    private BigDecimal mTransactionFee;
+    private String mAmount;
+    private String mReceiverAddress;
+    private CheckBox mSendAgreementCheckbox;
+    private Button mSendButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         setContentView(R.layout.activity_send_transaction);
         this.mContext = SendTransactionActivity.this;
         this.mGasLimitTextEdit = findViewById(R.id.gas_limit_text_input);
@@ -47,6 +66,19 @@ public class SendTransactionActivity extends AppCompatActivity {
         initToolbar();
         initGasPrice();
     }
+
+    private void initSendAgreementCheckListener() {
+        this.mSendAgreementCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                    mSendButton.setEnabled(true);
+                else
+                    mSendButton.setEnabled(false);
+            }
+        });
+    }
+
 
     private void setGasLimitTextChangeListener() {
         this.mGasLimitTextEdit.addTextChangedListener(new TextWatcher() {
@@ -107,35 +139,37 @@ public class SendTransactionActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
-                    Log.d(TAG, "json convertion error");
                     e.printStackTrace();
                 }
             }
         });
     }
 
+    private BigDecimal transactionFee(BigDecimal gasPriceGwei, BigInteger gasLimit){
+        BigDecimal dFeeGwei = gasPriceGwei.multiply(new BigDecimal(gasLimit));
+        BigDecimal feeWei = Convert.toWei(dFeeGwei, Convert.Unit.GWEI);
+        BigDecimal feeEther = Convert.fromWei(feeWei, Convert.Unit.ETHER);
+        return feeEther;
+    }
+
     private void updateTxnGasInformation() {
         /*update gas price text view*/
         Spinner spinner = findViewById(R.id.gas_price_spinner);
         String selected = (String) spinner.getSelectedItem();
-        BigDecimal price = this.mGasSpinnerData.get(selected);
+        this.mGasPrice = this.mGasSpinnerData.get(selected);
         TextView textView = findViewById(R.id.gas_price_text_view);
-        textView.setText(getResources().getString(R.string.gas_price )+ ": " + price + " (Gwei)");
+        textView.setText(getResources().getString(R.string.gas_price )+ ": " + this.mGasPrice + " (Gwei)");
 
         /*update transaction fee text view*/
         textView = findViewById(R.id.transaction_fee_text_view);
         EditText editText = findViewById(R.id.gas_limit_text_input);
-        BigInteger limit = new BigInteger(editText.getText().toString());
-        BigDecimal dFee = new BigDecimal("0");
-        if(!editText.getText().toString().isEmpty()){
-            dFee = price.multiply(new BigDecimal(limit));
-        }
-        BigDecimal feeWei = Convert.toWei(dFee, Convert.Unit.GWEI);
-        BigDecimal fee = Convert.fromWei(feeWei, Convert.Unit.ETHER);
-        if(fee.compareTo(BigDecimal.ZERO) == 0){
+        String limit = editText.getText().toString().isEmpty() ? null : editText.getText().toString();
+        try {
+            this.mGasLimit = new BigInteger(limit);
+            this.mTransactionFee = transactionFee(this.mGasPrice, this.mGasLimit);
+            textView.setText(getResources().getString(R.string.transaction_fee) + ": " + this.mTransactionFee + " Ether");
+        }catch (Exception e){
             textView.setText("___");
-        }else {
-            textView.setText(getResources().getString(R.string.transaction_fee) + ": " + fee + " Ether");
         }
     }
 
@@ -167,7 +201,7 @@ public class SendTransactionActivity extends AppCompatActivity {
         Toolbar mToolbar = findViewById(R.id.transaction_boolbar);
         mToolbar.setTitle(R.string.balance);
         try {
-            mToolbar.setSubtitle(Wallet.getWallet().getBalance().toString() + " ETHER(s)");
+            mToolbar.setSubtitle(Convert.fromWei(Wallet.getWallet().getBalance().toString(), Convert.Unit.ETHER) + " ETHER(s)");
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -186,5 +220,51 @@ public class SendTransactionActivity extends AppCompatActivity {
 
     public void onCreateTransactionClicked(View view) {
 
+        String transactionReceipt = getResources().getString(R.string.sender) + ": " + Wallet.getWallet().getAddress() + "\n" +
+                getResources().getString(R.string.receier) + ": " + ((EditText) findViewById(R.id.receiver_address)).getText().toString() + "\n" +
+                getResources().getString(R.string.amount) + ": " + ((EditText) findViewById(R.id.amount_input)).getText().toString() + "Ether" + "\n" +
+                getResources().getString(R.string.estimated_fee) + ": " + this.mTransactionFee + "\n";
+        this.mAmount = ((EditText)findViewById(R.id.amount_input)).getText().toString();
+        this.mReceiverAddress = ((EditText)findViewById(R.id.receiver_address)).getText().toString();
+        DialogPlus dialogPlus = DialogPlus.newDialog(this)
+                .setCancelable(false)
+                .setContentHolder(new ViewHolder(R.layout.send_transaction_warning_dialog))
+                .setGravity(Gravity.CENTER)
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(DialogPlus dialog, View view) {
+                        switch (view.getId()){
+                            case R.id.send_button:
+                                sendTransaction();
+                                onBackPressed();
+                                Toast.makeText(SendTransactionActivity.this, R.string.transaction_sent_toast, Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.reject_transaction_button:
+                                dialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).create();
+
+        dialogPlus.show();
+        this.mSendButton = findViewById(R.id.send_button);
+        this.mSendAgreementCheckbox = findViewById(R.id.agreement_checkbox);
+        initSendAgreementCheckListener();
+        TextView textView = findViewById(R.id.receipt_text_view);
+        textView.setText(transactionReceipt);
+    }
+
+    private void sendTransaction() {
+        try {
+            Network.getNetwork().sendTransaction(Convert.toWei(mAmount, Convert.Unit.ETHER).toBigInteger(),
+                    mReceiverAddress,
+                    Wallet.getWallet().getAddress(),
+                    mGasLimit,
+                    mGasPrice.toBigInteger());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

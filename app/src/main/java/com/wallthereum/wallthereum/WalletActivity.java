@@ -29,6 +29,7 @@ import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.utils.Convert;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.ExecutionException;
 
@@ -55,9 +56,9 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
 
         try {
             BigInteger wei = Wallet.getWallet().getBalance();
-            Convert.fromWei(wei.toString(), Convert.Unit.ETHER);        //converting wei to ether
+            BigDecimal ether = Convert.fromWei(wei.toString(), Convert.Unit.ETHER);        //converting wei to ether
             TextView balanceView = (TextView) findViewById(R.id.balance_view);
-            balanceView.setText(wei.toString() + " Ether(s)");
+            balanceView.setText(ether + " Ether(s)");
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -103,7 +104,6 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void showToast(String message){
-        Log.d(TAG, message);
         Toast.makeText(WalletActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 

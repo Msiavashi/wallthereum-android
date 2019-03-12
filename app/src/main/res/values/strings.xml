@@ -57,4 +57,5 @@
     <string name="estimated_fee">Estimated fee</string>
     <string name="send_agreement_checkbox">i have read terms, and accept to send</string>
     <string name="transaction_sent_toast">transaction sent successfuly</string>
+    <string name="sending_transaction">sending transaction ...</string>
 </resources>

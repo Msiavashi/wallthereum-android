@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -234,9 +235,10 @@ public class SendTransactionActivity extends AppCompatActivity {
                     public void onClick(DialogPlus dialog, View view) {
                         switch (view.getId()){
                             case R.id.send_button:
+                                findViewById(R.id.transaction_loading).setVisibility(View.VISIBLE);
+                                dialog.dismiss();
+                                Toast.makeText(SendTransactionActivity.this, R.string.sending_transaction, Toast.LENGTH_LONG).show();
                                 sendTransaction();
-                                onBackPressed();
-                                Toast.makeText(SendTransactionActivity.this, R.string.transaction_sent_toast, Toast.LENGTH_LONG).show();
                                 break;
                             case R.id.reject_transaction_button:
                                 dialog.dismiss();
@@ -265,12 +267,31 @@ public class SendTransactionActivity extends AppCompatActivity {
                             Wallet.getWallet().getAddress(),
                             mGasLimit,
                             mGasPrice.toBigInteger());
+                    onTransactionSuccessful();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                }finally {
+                    findViewById(R.id.transaction_loading).setVisibility(View.VISIBLE);
                 }
             }
+
+            private void onTransactionSuccessful() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        saveTransactionToDB();
+                        onBackPressed();
+                        findViewById(R.id.transaction_loading).setVisibility(View.GONE);
+                        Toast.makeText(SendTransactionActivity.this, R.string.transaction_sent_toast, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
         });
+    }
+
+    private void saveTransactionToDB() {
+
     }
 }

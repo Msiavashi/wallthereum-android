@@ -108,10 +108,11 @@ public class Network {
         return mAddress;
     }
 
-    public void sendTransaction(BigInteger value, String toAddr, String fromAddr, BigInteger gasLimit, BigInteger gasPrice) throws ExecutionException, InterruptedException {
+    public TransactionReceipt sendTransaction(BigInteger value, String toAddr, String fromAddr, BigInteger gasLimit, BigInteger gasPrice) throws ExecutionException, InterruptedException {
         TransactionManager transactionManager = new RawTransactionManager(Network.getNetwork().getmConnection(), Wallet.getWallet().getCredentials());
         Transfer transfer = new Transfer(getmConnection(), transactionManager);
         BigDecimal gasPriceWei = Convert.toWei(gasPrice.toString(), Convert.Unit.GWEI);;
         TransactionReceipt transactionReceipt = transfer.sendFunds(toAddr, new BigDecimal(value), Convert.Unit.WEI, gasPriceWei.toBigInteger(), gasLimit).sendAsync().get();
+        return transactionReceipt;
     }
 }

@@ -7,16 +7,20 @@ import com.wallthereum.wallthereum.BaseActivity;
 import com.wallthereum.wallthereum.Exceptions.ConnectionException;
 import com.wallthereum.wallthereum.R;
 
+import org.spongycastle.util.encoders.Hex;
+import org.web3j.crypto.Credentials;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
+import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.Web3jFactory;
 import org.web3j.protocol.core.DefaultBlockParameterName;
-import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
-import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.RawTransactionManager;
+import org.web3j.tx.TransactionManager;
 import org.web3j.tx.Transfer;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Numeric;
@@ -104,24 +108,10 @@ public class Network {
         return mAddress;
     }
 
-    public void sendTransaction(BigInteger value, String toAddr, String fromAddr, BigInteger gasLimit, BigInteger gasPrice) throws IOException {
-//        getting nonce value
-        EthGetTransactionCount ethGetTransactionCount = this.getmConnection().ethGetTransactionCount(fromAddr, DefaultBlockParameterName.LATEST).send();
-        BigInteger nonce = ethGetTransactionCount.getTransactionCount();
-
-//        creating raw transaction
-        RawTransaction rawTransaction = RawTransaction.createEtherTransaction(nonce, gasPrice, gasLimit, toAddr, value);
-
-//        sigining raw txn
-        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, (byte) getmChainId(), Wallet.getWallet().getCredentials());
-        String hexValue =   Numeric.toHexString(signedMessage);
-
-//        sending signed transaction
-        try {
-            TransactionReceipt transactionReceipt = Transfer.sendFunds(
-            mConnection, Wallet.getWallet().getCredentials(), toAddr, new BigDecimal(value), Convert.Unit.WEI).send();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void sendTransaction(BigInteger value, String toAddr, String fromAddr, BigInteger gasLimit, BigInteger gasPrice) throws ExecutionException, InterruptedException {
+        TransactionManager transactionManager = new RawTransactionManager(Network.getNetwork().getmConnection(), Wallet.getWallet().getCredentials());
+        Transfer transfer = new Transfer(getmConnection(), transactionManager);
+        BigDecimal gasPriceWei = Convert.toWei(gasPrice.toString(), Convert.Unit.GWEI);;
+        TransactionReceipt transactionReceipt = transfer.sendFunds(toAddr, new BigDecimal(value), Convert.Unit.WEI, gasPriceWei.toBigInteger(), gasLimit).sendAsync().get();
     }
 }

@@ -219,7 +219,6 @@ public class SendTransactionActivity extends AppCompatActivity {
     }
 
     public void onCreateTransactionClicked(View view) {
-
         String transactionReceipt = getResources().getString(R.string.sender) + ": " + Wallet.getWallet().getAddress() + "\n" +
                 getResources().getString(R.string.receier) + ": " + ((EditText) findViewById(R.id.receiver_address)).getText().toString() + "\n" +
                 getResources().getString(R.string.amount) + ": " + ((EditText) findViewById(R.id.amount_input)).getText().toString() + "Ether" + "\n" +
@@ -257,14 +256,21 @@ public class SendTransactionActivity extends AppCompatActivity {
     }
 
     private void sendTransaction() {
-        try {
-            Network.getNetwork().sendTransaction(Convert.toWei(mAmount, Convert.Unit.ETHER).toBigInteger(),
-                    mReceiverAddress,
-                    Wallet.getWallet().getAddress(),
-                    mGasLimit,
-                    mGasPrice.toBigInteger());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Network.getNetwork().sendTransaction(Convert.toWei(mAmount, Convert.Unit.ETHER).toBigInteger(),
+                            mReceiverAddress,
+                            Wallet.getWallet().getAddress(),
+                            mGasLimit,
+                            mGasPrice.toBigInteger());
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

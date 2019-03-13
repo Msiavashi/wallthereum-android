@@ -23,8 +23,10 @@
             android:layout_height="wrap_content"
             android:background="@color/bondi_blue"
             android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:subtitleTextColor="@color/white"
             app:layout_constraintTop_toTopOf="parent"
             app:titleTextColor="@color/white"
             app:title="@string/app_name" >

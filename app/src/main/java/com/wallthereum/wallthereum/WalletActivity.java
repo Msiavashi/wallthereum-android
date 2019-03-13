@@ -1,49 +1,46 @@
 package com.wallthereum.wallthereum;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.joaquimley.faboptions.FabOptions;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.ViewHolder;
-import com.wallthereum.wallthereum.coin.Ethereum.Network;
+import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionDB;
+import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionEntity;
 import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
-
-import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.DefaultBlockParameterName;
-import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.utils.Convert;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class WalletActivity extends BaseActivity implements View.OnClickListener{
 
     private static final String TAG = "Wallet Activity";
-
+    private RecyclerView mTransactionsHistory;
+    private TextView mEmptyTransaction;
+    private static List<TransactionEntity> transactionsList;
+    private TransactionsAdapter mTransactionsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet);
-
-//        set elevation of actionbar to 0
-        this.getSupportActionBar().setElevation(0);
+        this.mTransactionsHistory = findViewById(R.id.transactions_history);
+        this.mEmptyTransaction = findViewById(R.id.empty_transactions);
         this.initTransactionsHistory();
         this.initFab();
         this.initBalance();
@@ -55,16 +52,13 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         loading.setVisibility(View.VISIBLE);
 
         try {
-            BigInteger wei = Wallet.getWallet().getBalance();
-            BigDecimal ether = Convert.fromWei(wei.toString(), Convert.Unit.ETHER);        //converting wei to ether
-            TextView balanceView = (TextView) findViewById(R.id.balance_view);
-            balanceView.setText(ether + " Ether(s)");
+            getSupportActionBar().setTitle(R.string.balance);
+            getSupportActionBar().setSubtitle(Convert.fromWei(Wallet.getWallet().getBalance().toString(), Convert.Unit.ETHER) + " ETHER(s)");
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }finally {
-//            dismiss loading
             loading.setVisibility(View.GONE);
         }
     }
@@ -158,10 +152,29 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initTransactionsHistory(){
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.transactions_history);
-        TextView textView = (TextView) findViewById(R.id.empty_transactions);
-        recyclerView.setVisibility(View.GONE);
-        textView.setVisibility(View.VISIBLE);
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                transactionsList = TransactionDB.getTransactionDB(getContext()).transactionDAO().getTransactions();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (transactionsList.isEmpty()){
+                            mEmptyTransaction.setVisibility(View.VISIBLE);
+                            mTransactionsHistory.setVisibility(View.GONE);
+                        }else {
+                            mEmptyTransaction.setVisibility(View.GONE);
+                            mTransactionsHistory.setVisibility(View.VISIBLE);
+                            mTransactionsAdapter = new TransactionsAdapter(transactionsList);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                            mTransactionsHistory.setLayoutManager(layoutManager);
+                            mTransactionsHistory.setItemAnimator(new DefaultItemAnimator());
+                            mTransactionsHistory.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+                            mTransactionsHistory.setAdapter(mTransactionsAdapter);
+                        }
+                    }
+                });
+            }
+        });
     }
-
 }

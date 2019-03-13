@@ -15,5 +15,6 @@
     <color name="alert_text">#D8000C</color>
     <color name="warning_background">#ffdd42</color>
     <color name="warning_text">#9F6000</color>
-
+    <color name="date">#999999</color>
+    <color name="title">#222222</color>
 </resources>

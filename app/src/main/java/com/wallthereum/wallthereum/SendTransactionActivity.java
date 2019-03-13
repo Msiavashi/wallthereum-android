@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +25,6 @@ import android.widget.Toast;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionDAO;
 import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionDB;
 import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionEntity;
 import com.wallthereum.wallthereum.coin.Ethereum.Network;
@@ -42,6 +40,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class SendTransactionActivity extends AppCompatActivity {
@@ -204,7 +203,7 @@ public class SendTransactionActivity extends AppCompatActivity {
     }
 
     private void initToolbar(){
-        Toolbar mToolbar = findViewById(R.id.transaction_boolbar);
+        Toolbar mToolbar = findViewById(R.id.transaction_toolbar);
         mToolbar.setTitle(R.string.balance);
         try {
             mToolbar.setSubtitle(Convert.fromWei(Wallet.getWallet().getBalance().toString(), Convert.Unit.ETHER) + " ETHER(s)");
@@ -306,6 +305,9 @@ public class SendTransactionActivity extends AppCompatActivity {
                 transactionEntity.gasLimit = gasLimit.toString();
                 transactionEntity.gasPrice = gasPrice.toString();
                 TransactionDB.getTransactionDB(SendTransactionActivity.getContext()).transactionDAO().insertSingleTransaction(transactionEntity);
+                Log.d(TAG, "all inserted");
+                List<TransactionEntity> list = TransactionDB.getTransactionDB(mContext).transactionDAO().getTransactions();
+                Log.d(TAG, "all orders: " + list.get(35).transactionHash);
                 onTransactionSuccessful();
             }
         });

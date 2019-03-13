@@ -8,6 +8,7 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
@@ -22,10 +23,10 @@ public interface TransactionDAO {
     @Query("SELECT * FROM Transactions")
     LiveData<List<TransactionEntity>> getTransactionsLive();
 
-    @Query("SELECT * FROM Transactions WHERE tid = :tid")
-    TransactionEntity getTransaction(int tid);
+    @Query("SELECT * FROM Transactions WHERE id = :id")
+    TransactionEntity getTransaction(int id);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSingleTransaction(TransactionEntity transactionEntity);
 
 //    @Insert

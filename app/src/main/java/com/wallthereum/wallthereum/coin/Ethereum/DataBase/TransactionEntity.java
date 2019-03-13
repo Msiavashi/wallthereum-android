@@ -13,7 +13,7 @@ import androidx.room.TypeConverters;
 @TypeConverters(DateConverter.class)
 public class TransactionEntity {
     @PrimaryKey(autoGenerate = true)
-    public int tid;
+    public int id;
 
     @ColumnInfo(name = "transaction_hash")
     public String transactionHash;

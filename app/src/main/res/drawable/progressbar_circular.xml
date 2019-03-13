@@ -19,8 +19,8 @@
         <gradient
             android:centerColor="@color/bondi_blue"
             android:centerY="0.50"
-            android:endColor="@color/color_alizarin"
-            android:startColor="@color/design_default_color_secondary"
+            android:endColor="@color/mtrl_dark_on_primary_emphasis_medium"
+            android:startColor="@color/mtrl_on_surface_emphasis_medium"
             android:type="sweep"
             android:useLevel="false" />
     </shape>

@@ -26,16 +26,21 @@ import android.widget.Toast;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionDAO;
+import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionDB;
+import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionEntity;
 import com.wallthereum.wallthereum.coin.Ethereum.Network;
 import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.utils.Convert;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
@@ -262,12 +267,12 @@ public class SendTransactionActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Network.getNetwork().sendTransaction(Convert.toWei(mAmount, Convert.Unit.ETHER).toBigInteger(),
+                    TransactionReceipt transactionReceipt = Network.getNetwork().sendTransaction(Convert.toWei(mAmount, Convert.Unit.ETHER).toBigInteger(),
                             mReceiverAddress,
                             Wallet.getWallet().getAddress(),
                             mGasLimit,
                             mGasPrice.toBigInteger());
-                    onTransactionSuccessful();
+                    saveTransactionToDB(transactionReceipt, mAmount, mReceiverAddress, mGasLimit, mGasPrice);
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -276,22 +281,33 @@ public class SendTransactionActivity extends AppCompatActivity {
                     findViewById(R.id.transaction_loading).setVisibility(View.VISIBLE);
                 }
             }
-
-            private void onTransactionSuccessful() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        saveTransactionToDB();
-                        onBackPressed();
-                        findViewById(R.id.transaction_loading).setVisibility(View.GONE);
-                        Toast.makeText(SendTransactionActivity.this, R.string.transaction_sent_toast, Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
         });
     }
 
-    private void saveTransactionToDB() {
-
+    private void onTransactionSuccessful() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                onBackPressed();
+                findViewById(R.id.transaction_loading).setVisibility(View.GONE);
+                Toast.makeText(SendTransactionActivity.this, R.string.transaction_sent_toast, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    private void saveTransactionToDB(TransactionReceipt transactionReceipt, String amount, String receiverAddress, BigInteger gasLimit, BigDecimal gasPrice) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                TransactionEntity transactionEntity = new TransactionEntity();
+                transactionEntity.transactionHash = transactionReceipt.getTransactionHash();
+                transactionEntity.createdAt = new Date();
+                transactionEntity.amount = amount;
+                transactionEntity.receiverAddress = receiverAddress;
+                transactionEntity.gasLimit = gasLimit.toString();
+                transactionEntity.gasPrice = gasPrice.toString();
+                TransactionDB.getTransactionDB(SendTransactionActivity.getContext()).transactionDAO().insertSingleTransaction(transactionEntity);
+                onTransactionSuccessful();
+            }
+        });
     }
 }

@@ -10,7 +10,6 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.wallthereum.wallthereum.Exceptions.ConnectionException;
 import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -18,38 +17,40 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import org.web3j.crypto.CipherException;
-
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-
 import androidx.appcompat.app.AlertDialog;
 
 public class MainActivity extends BaseActivity {
 
     private final String TAG = "MainActivity";
+    private TextInputEditText mPasswordInput;
+    private int mMinimumPasswordLength = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.mPasswordInput = findViewById(R.id.main_password_field);
     }
 
     public void onClickNewWallet(View view) {
-        TextInputEditText text = (TextInputEditText) findViewById(R.id.main_password_field);
-        final String password = text.getText().toString();
-
+        final String password = mPasswordInput.getText().toString();
         if (password.isEmpty()){
-            Toast.makeText(this, "password empty", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, R.string.empty_password, Toast.LENGTH_SHORT).show();
+            mPasswordInput.setError(getResources().getString(R.string.empty_password_error));
+            return;
+        }else if (password.length() < mMinimumPasswordLength){
+//            Toast.makeText(this, R.string.password_length_error_toast, Toast.LENGTH_SHORT).show();
+            mPasswordInput.setError(getResources().getString(R.string.password_length_input_error));
             return;
         }
 
@@ -90,7 +91,6 @@ public class MainActivity extends BaseActivity {
                         wallet.unlockKeystore(path, password);
                         Intent intent = new Intent(MainActivity.this, WalletActivity.class);
                         startActivity(intent);
-
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -254,20 +254,34 @@ public class MainActivity extends BaseActivity {
                             Wallet.getWallet().unlockKeystore(filePath, password);
                             Intent intent = new Intent(MainActivity.this, WalletActivity.class);
                             startActivity(intent);
+                        } catch (IOException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MainActivity.this, R.string.file_error_toast, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } catch (CipherException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MainActivity.this, R.string.decryption_error_toast, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } catch (ConnectionException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MainActivity.this, R.string.connection_error, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }finally {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     findViewById(R.id.loading).setVisibility(View.GONE);
-                                    Toast.makeText(MainActivity.this, R.string.wallet_unlock_success, Toast.LENGTH_SHORT).show();
                                 }
                             });
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (CipherException e) {
-                            e.printStackTrace();
-                            Toast.makeText(MainActivity.this, "Cipher Errror", Toast.LENGTH_SHORT).show();
-                        } catch (ConnectionException e) {
-                            e.printStackTrace();
                         }
                     }
                 });

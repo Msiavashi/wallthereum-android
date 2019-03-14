@@ -89,7 +89,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/open_sans_semibold"
+            android:fontFamily="@font/open_sans"
             android:text="@string/creation_warning"
             android:textAlignment="textStart"
             android:textAllCaps="false"

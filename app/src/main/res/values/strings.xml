@@ -58,4 +58,16 @@
     <string name="send_agreement_checkbox">i have read terms, and accept to send</string>
     <string name="transaction_sent_toast">transaction sent successfuly</string>
     <string name="sending_transaction">sending transaction ...</string>
+    <string name="empty_password">empty password field</string>
+    <string name="password_length_error_toast">short password</string>
+    <string name="empty_password_error">Please enter a password</string>
+    <string name="password_length_input_error">Password must be at least 8 characters</string>
+    <string name="exchange">exchange coin</string>
+    <string name="buy_coin">buy coin</string>
+    <string name="share_item_title">share</string>
+    <string name="soon">soon</string>
+    <string name="decryption_error">wrong password</string>
+    <string name="connection_error">network error</string>
+    <string name="decryption_error_toast">wrong password</string>
+    <string name="file_error_toast">file error</string>
 </resources>

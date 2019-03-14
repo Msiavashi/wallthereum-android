@@ -2,8 +2,12 @@
 
 package com.wallthereum.wallthereum.coin.Ethereum;
 
+import android.util.Log;
+
 import com.wallthereum.wallthereum.Exceptions.ConnectionException;
+import com.wallthereum.wallthereum.Exceptions.InvalidPKException;
 import com.wallthereum.wallthereum.MainActivity;
+import com.wallthereum.wallthereum.R;
 
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
@@ -20,6 +24,8 @@ import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.interfaces.ECKey;
+import java.security.interfaces.ECPrivateKey;
 import java.util.concurrent.ExecutionException;
 
 public class Wallet {
@@ -78,11 +84,15 @@ public class Wallet {
         this.credentials = WalletUtils.loadCredentials(password, filePath);
     }
 
-    public void unlockPrivateKey(String pk) throws ConnectionException {
+    public void unlockPrivateKey(String pk) throws ConnectionException, InvalidPKException {
         if(!Network.getNetwork().isConnected()){
             Network.getNetwork().connect();
         }
+        if (!WalletUtils.isValidPrivateKey(pk)) {
+            throw new InvalidPKException("invalid private key");
+        }
         this.credentials = Credentials.create(pk);
+
     }
 
     public Credentials getCredentials() {

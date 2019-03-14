@@ -9,6 +9,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.wallthereum.wallthereum.Exceptions.ConnectionException;
+import com.wallthereum.wallthereum.Exceptions.InvalidPKException;
 import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -191,12 +192,30 @@ public class MainActivity extends BaseActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    findViewById(R.id.loading).setVisibility(View.GONE);
                                     Toast.makeText(MainActivity.this, R.string.wallet_unlock_success, Toast.LENGTH_SHORT).show();
                                 }
                             });
                         } catch (ConnectionException e) {
-                            e.printStackTrace();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MainActivity.this, R.string.connection_error, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } catch (InvalidPKException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MainActivity.this, R.string.invalid_pk_toast, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }finally {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    findViewById(R.id.loading).setVisibility(View.GONE);
+                                }
+                            });
                         }
                     }
                 });

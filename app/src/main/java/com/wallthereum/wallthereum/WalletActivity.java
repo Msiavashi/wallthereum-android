@@ -125,7 +125,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
 
     private void showPKDialog() {
         final EditText editText = new EditText(this);
-        editText.setText(Wallet.getWallet().getEcKeyPair().getPrivateKey().toString());
+        editText.setText(Wallet.getWallet().getEcKeyPair().getPrivateKey().toString(16));
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(R.string.private_key_dialog_title)
                 .setView(editText)

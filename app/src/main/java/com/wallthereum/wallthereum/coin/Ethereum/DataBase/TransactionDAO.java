@@ -20,8 +20,11 @@ public interface TransactionDAO {
     @Query("SELECT * FROM Transactions")
     List<TransactionEntity> getTransactions();
 
-    @Query("SELECT * FROM Transactions")
-    LiveData<List<TransactionEntity>> getTransactionsLive();
+    @Query("SELECT * FROM transactions WHERE sender_address = :walletAddress ORDER BY created_at DESC")
+    List<TransactionEntity> getWalletTransactions(String walletAddress);
+
+//    @Query("SELECT * FROM Transactions")
+//    LiveData<List<TransactionEntity>> getTransactionsLive();
 
     @Query("SELECT * FROM Transactions WHERE id = :id")
     TransactionEntity getTransaction(int id);

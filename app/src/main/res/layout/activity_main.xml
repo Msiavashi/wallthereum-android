@@ -10,18 +10,16 @@
 
     <TextView
         android:id="@+id/main_title"
-        android:layout_width="321dp"
-        android:layout_height="77dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/open_sans_semibold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/vast_shadow"
         android:text="@string/main_title"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="30sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -54,36 +52,40 @@
             android:id="@+id/main_password_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:textColor="@color/white"
-            android:textColorLink="@color/californian_coral" />
+            android:textColorLink="@color/californian_coral"
+            android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/new_wallet_button"
         android:layout_width="150dp"
-        android:layout_height="54dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:elevation="5dp"
-        android:text="@string/new_wallet_button_text"
-        android:onClick="onClickNewWallet"
         android:backgroundTint="@color/glass"
+        android:elevation="5dp"
+        android:fontFamily="@font/open_sans"
+        android:onClick="onClickNewWallet"
+        android:text="@string/new_wallet_button_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="202dp"
-        android:layout_height="55dp"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="59dp"
         android:backgroundTint="@color/bondi_blue"
-        android:text="@string/unlock_wallet_button"
+        android:fontFamily="@font/open_sans"
         android:onClick="onUnlockExistingWalletClicked"
+        android:text="@string/unlock_wallet_button"
         android:textColor="@color/white"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

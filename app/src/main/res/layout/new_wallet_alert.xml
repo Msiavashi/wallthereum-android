@@ -7,6 +7,46 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="8dp"
+        android:background="@color/warning_background"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/warning_image_view"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:tint="@color/design_default_color_on_secondary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/round_warning_black_48dp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/open_sans_semibold"
+            android:gravity="center_vertical"
+            android:text="@string/warning"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/warning_text"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/warning_image_view"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <Button
         android:id="@+id/accept_button"
         style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
@@ -14,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
+        android:fontFamily="@font/open_sans"
         android:text="@string/accept"
         android:textColor="@color/bondi_blue"
         android:theme="@android:style/Widget.Material.Light.ButtonBar.AlertDialog"
@@ -27,58 +68,19 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:fontFamily="@font/open_sans"
         android:text="@string/reject"
         android:theme="@android:style/Widget.Material.Light.ButtonBar.AlertDialog"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/accept_button" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="0dp"
-        android:layout_height="136dp"
-        android:background="@color/warning_background"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/warning_image_view"
-            android:layout_width="104dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="3dp"
-            android:tint="@color/design_default_color_on_secondary"
-            app:layout_constraintBottom_toTopOf="@+id/textView3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/round_warning_black_48dp" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="@font/open_sans_semibold"
-            android:text="@string/warning"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textColor="@color/warning_text"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/warning_image_view" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/reject_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -87,16 +89,12 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
             android:fontFamily="@font/open_sans_semibold"
             android:text="@string/creation_warning"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@color/alert_text"
-            android:textSize="18sp"
-            android:textStyle="italic"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -84,7 +84,6 @@ public class MainActivity extends BaseActivity {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                //TODO your background code
                 if(isInternetConnected()){
                     try {
                         String path = wallet.create(password);

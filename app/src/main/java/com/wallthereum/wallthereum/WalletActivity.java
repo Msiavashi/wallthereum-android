@@ -155,7 +155,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                transactionsList = TransactionDB.getTransactionDB(getContext()).transactionDAO().getTransactions();
+                transactionsList = TransactionDB.getTransactionDB(getContext()).transactionDAO().getWalletTransactions(Wallet.getWallet().getAddress());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

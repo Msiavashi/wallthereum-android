@@ -31,7 +31,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="21dp"
         android:backgroundTint="@color/design_default_color_primary"
-        android:fontFamily="@font/open_sans_semibold"
+        android:fontFamily="@font/open_sans"
         android:onClick="onCreateTransactionClicked"
         android:text="@string/create_transaction_button"
         android:textColor="@color/white"
@@ -72,6 +72,7 @@
                     android:id="@+id/receiver_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
                     android:hint="@string/receiver_address_hint" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,6 +92,7 @@
                     android:id="@+id/amount_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
                     android:hint="@string/amount_hint" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,6 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
+        android:fontFamily="@font/open_sans"
         android:text="@string/gas_section_title"
         android:textAlignment="textStart"
         app:layout_constraintStart_toStartOf="parent"
@@ -179,6 +182,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789"
+                    android:fontFamily="@font/open_sans"
                     android:hint="@string/gas_limit_hint"
                     android:inputType="none|number|numberDecimal"
                     android:text="21000" />

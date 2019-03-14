@@ -304,10 +304,8 @@ public class SendTransactionActivity extends AppCompatActivity {
                 transactionEntity.receiverAddress = receiverAddress;
                 transactionEntity.gasLimit = gasLimit.toString();
                 transactionEntity.gasPrice = gasPrice.toString();
+                transactionEntity.senderAddress = Wallet.getWallet().getAddress();
                 TransactionDB.getTransactionDB(SendTransactionActivity.getContext()).transactionDAO().insertSingleTransaction(transactionEntity);
-                Log.d(TAG, "all inserted");
-                List<TransactionEntity> list = TransactionDB.getTransactionDB(mContext).transactionDAO().getTransactions();
-                Log.d(TAG, "all orders: " + list.get(35).transactionHash);
                 onTransactionSuccessful();
             }
         });

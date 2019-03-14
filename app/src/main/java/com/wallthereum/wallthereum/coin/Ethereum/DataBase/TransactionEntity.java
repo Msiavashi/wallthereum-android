@@ -31,6 +31,9 @@ public class TransactionEntity {
 
     @ColumnInfo(name = "gas_price")
     public String gasPrice;
+
+    @ColumnInfo(name = "sender_address")
+    public String senderAddress;
 }
 
 

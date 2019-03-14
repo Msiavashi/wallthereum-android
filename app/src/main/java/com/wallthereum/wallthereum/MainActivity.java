@@ -10,11 +10,12 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.wallthereum.wallthereum.Exceptions.ConnectionException;
 import com.wallthereum.wallthereum.Exceptions.InvalidPKException;
+import com.wallthereum.wallthereum.coin.Ethereum.Network;
 import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
+
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
@@ -36,11 +37,13 @@ public class MainActivity extends BaseActivity {
     private final String TAG = "MainActivity";
     private TextInputEditText mPasswordInput;
     private int mMinimumPasswordLength = 8;
+    public static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mContext = this;
         this.mPasswordInput = findViewById(R.id.main_password_field);
     }
 
@@ -87,7 +90,7 @@ public class MainActivity extends BaseActivity {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                if(isInternetConnected()){
+                if(Network.getNetwork().isInternetConnected(mContext)){
                     try {
                         String path = wallet.create(password);
                         wallet.unlockKeystore(path, password);
@@ -127,19 +130,6 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private boolean isInternetConnected(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
-        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null &&
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED){
-            return true;
-        }
-        if( connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null &&
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-            return true;
-        }
-        else
-            return false;
-    }
 
     public void onUnlockExistingWalletClicked(View view) {
         final String[] options = {getResources().getString(R.string.unlock_with_pk), getResources().getString(R.string.unlock_with_keystore), getResources().getString(R.string.sync)};
@@ -167,7 +157,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void unlockWithPK() {
-        if(!isInternetConnected()){
+        if(!Network.getNetwork().isInternetConnected(mContext)){
             Toast.makeText(this, R.string.connection_error, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -255,7 +245,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void unlockKeystore(final String filePath) {
-        if(!isInternetConnected()){
+        if(!Network.getNetwork().isInternetConnected(mContext)){
             Toast.makeText(this, R.string.connection_error, Toast.LENGTH_SHORT).show();
             return;
         }

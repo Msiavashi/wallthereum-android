@@ -71,4 +71,5 @@
     <string name="decryption_error_toast">wrong password</string>
     <string name="file_error_toast">file error</string>
     <string name="invalid_pk_toast">invalid private key</string>
+    <string name="invalid_address">invalid address</string>
 </resources>

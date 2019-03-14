@@ -1,5 +1,9 @@
 package com.wallthereum.wallthereum.coin.Ethereum;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.wallthereum.wallthereum.BaseActivity;
 import com.wallthereum.wallthereum.Exceptions.ConnectionException;
 import com.wallthereum.wallthereum.R;
@@ -99,5 +103,19 @@ public class Network {
         BigDecimal gasPriceWei = Convert.toWei(gasPrice.toString(), Convert.Unit.GWEI);;
         TransactionReceipt transactionReceipt = transfer.sendFunds(toAddr, new BigDecimal(value), Convert.Unit.WEI, gasPriceWei.toBigInteger(), gasLimit).sendAsync().get();
         return transactionReceipt;
+    }
+
+    public boolean isInternetConnected(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null &&
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED){
+            return true;
+        }
+        if( connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null &&
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+        }
+        else
+            return false;
     }
 }

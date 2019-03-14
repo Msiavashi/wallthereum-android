@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.joaquimley.faboptions.FabOptions;
 import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionDB;
 import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionEntity;
+import com.wallthereum.wallthereum.coin.Ethereum.Network;
 import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
 import org.web3j.utils.Convert;
 import java.math.BigDecimal;
@@ -93,6 +94,10 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void showTransactionDialog() {
+        if(!Network.getNetwork().isInternetConnected(this)){
+            Toast.makeText(this, R.string.connection_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(WalletActivity.this, SendTransactionActivity.class);
         startActivity(intent);
     }

@@ -93,7 +93,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans"
-                    android:hint="@string/amount_hint" />
+                    android:hint="@string/amount_hint"
+                    android:inputType="number|numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -184,7 +185,7 @@
                     android:digits="0123456789"
                     android:fontFamily="@font/open_sans"
                     android:hint="@string/gas_limit_hint"
-                    android:inputType="none|number|numberDecimal"
+                    android:inputType="none|number"
                     android:text="21000" />
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -32,6 +32,7 @@ import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.utils.Convert;
 
@@ -224,8 +225,14 @@ public class SendTransactionActivity extends AppCompatActivity {
     }
 
     public void onCreateTransactionClicked(View view) {
+        EditText receiverAddressEditText = findViewById(R.id.receiver_address);
+        if (!WalletUtils.isValidAddress(receiverAddressEditText.getText().toString())){
+            Toast.makeText(mContext, R.string.invalid_address, Toast.LENGTH_SHORT).show();
+            receiverAddressEditText.setError(getResources().getString(R.string.invalid_address));
+            return;
+        }
         String transactionReceipt = getResources().getString(R.string.sender) + ": " + Wallet.getWallet().getAddress() + "\n" +
-                getResources().getString(R.string.receier) + ": " + ((EditText) findViewById(R.id.receiver_address)).getText().toString() + "\n" +
+                getResources().getString(R.string.receier) + ": " + receiverAddressEditText.getText().toString() + "\n" +
                 getResources().getString(R.string.amount) + ": " + ((EditText) findViewById(R.id.amount_input)).getText().toString() + "Ether" + "\n" +
                 getResources().getString(R.string.estimated_fee) + ": " + this.mTransactionFee + "\n";
         this.mAmount = ((EditText)findViewById(R.id.amount_input)).getText().toString();
@@ -239,6 +246,15 @@ public class SendTransactionActivity extends AppCompatActivity {
                     public void onClick(DialogPlus dialog, View view) {
                         switch (view.getId()){
                             case R.id.send_button:
+                                if(!Network.getNetwork().isInternetConnected(mContext)){
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(SendTransactionActivity.this, R.string.connection_error, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    return;
+                                }
                                 findViewById(R.id.transaction_loading).setVisibility(View.VISIBLE);
                                 dialog.dismiss();
                                 Toast.makeText(SendTransactionActivity.this, R.string.sending_transaction, Toast.LENGTH_LONG).show();

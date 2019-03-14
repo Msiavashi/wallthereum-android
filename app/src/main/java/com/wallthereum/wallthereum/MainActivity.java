@@ -28,6 +28,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends BaseActivity {
 
@@ -160,16 +161,18 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+
         builder.show();
     }
 
     private void unlockWithPK() {
         if(!isInternetConnected()){
-            Toast.makeText(this, "connection error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.connection_error, Toast.LENGTH_SHORT).show();
             return;
         }
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
         final EditText edittext = new EditText(this);
+        edittext.setBackgroundTintList(getResources().getColorStateList(R.color.black));
         edittext.setInputType(InputType.TYPE_CLASS_TEXT);
         edittext.setHint(R.string.hint_private_key);
         alert.setTitle(R.string.private_key_dialog_title);
@@ -234,12 +237,13 @@ public class MainActivity extends BaseActivity {
 
     private void unlockKeystore(final String filePath) {
         if(!isInternetConnected()){
-            Toast.makeText(this, "connection error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.connection_error, Toast.LENGTH_SHORT).show();
             return;
         }
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
         final EditText edittext = new EditText(this);
         edittext.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        edittext.setBackgroundTintList(getResources().getColorStateList(R.color.black));
         edittext.setHint(R.string.hint_password);
         alert.setTitle(R.string.hint_password);
         alert.setView(edittext);

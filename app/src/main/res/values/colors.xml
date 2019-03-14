@@ -17,4 +17,5 @@
     <color name="warning_text">#9F6000</color>
     <color name="date">#999999</color>
     <color name="title">#222222</color>
+    <color name="black">#000000</color>
 </resources>

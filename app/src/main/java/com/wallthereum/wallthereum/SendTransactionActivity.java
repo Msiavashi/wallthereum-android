@@ -150,7 +150,7 @@ public class SendTransactionActivity extends AppCompatActivity {
         });
     }
 
-    private BigDecimal transactionFee(BigDecimal gasPriceGwei, BigInteger gasLimit){
+    public static BigDecimal transactionFee(BigDecimal gasPriceGwei, BigInteger gasLimit){
         BigDecimal dFeeGwei = gasPriceGwei.multiply(new BigDecimal(gasLimit));
         BigDecimal feeWei = Convert.toWei(dFeeGwei, Convert.Unit.GWEI);
         BigDecimal feeEther = Convert.fromWei(feeWei, Convert.Unit.ETHER);

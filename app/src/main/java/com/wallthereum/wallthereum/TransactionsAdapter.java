@@ -7,6 +7,10 @@ import android.widget.TextView;
 
 import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionEntity;
 
+import org.w3c.dom.Text;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -21,14 +25,16 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView hash;
-        public TextView creation_date;
+        public TextView creationDate;
         public TextView receiverAddress;
+        public TextView txnFee;
 
         public MyViewHolder(View view) {
             super(view);
             hash = view.findViewById(R.id.item_hash);
-            creation_date = view.findViewById(R.id.item_creation_date);
+            creationDate = view.findViewById(R.id.item_creation_date);
             receiverAddress = view.findViewById(R.id.item_receiver_address);
+            txnFee = view.findViewById(R.id.item_fee);
         }
     }
 
@@ -42,9 +48,11 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         TransactionEntity transactionEntity = this.transactionsList.get(position);
-        holder.hash.setText(transactionEntity.transactionHash);
-        holder.receiverAddress.setText(transactionEntity.receiverAddress);
-        holder.creation_date.setText(transactionEntity.createdAt.toString());
+        BigDecimal fee = SendTransactionActivity.transactionFee(new BigDecimal(transactionEntity.gasPrice), new BigInteger(transactionEntity.gasLimit));
+        holder.hash.setText("Hash: " + transactionEntity.transactionHash);
+        holder.receiverAddress.setText("receiver: " + transactionEntity.receiverAddress);
+        holder.creationDate.setText(transactionEntity.createdAt.toString());
+        holder.txnFee.setText("fee: " + fee.toString());
     }
 
     @Override

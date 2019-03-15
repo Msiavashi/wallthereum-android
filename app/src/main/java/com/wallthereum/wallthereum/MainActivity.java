@@ -132,7 +132,7 @@ public class MainActivity extends BaseActivity {
 
 
     public void onUnlockExistingWalletClicked(View view) {
-        final String[] options = {getResources().getString(R.string.unlock_with_pk), getResources().getString(R.string.unlock_with_keystore), getResources().getString(R.string.sync)};
+        final String[] options = {getResources().getString(R.string.unlock_with_pk), getResources().getString(R.string.unlock_with_keystore)};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.unlock_dialog_title);
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -144,8 +144,6 @@ public class MainActivity extends BaseActivity {
                         break;
                     case 1:     //options[1]
                         getKeystoreFile();
-                        break;
-                    case 2:     //options[2]
                         break;
                     default:
                         break;

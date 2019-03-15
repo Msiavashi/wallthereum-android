@@ -1,12 +1,14 @@
 package com.wallthereum.wallthereum;
 
 import androidx.core.app.ActivityCompat;
-import androidx.documentfile.provider.DocumentFile;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -18,7 +20,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -48,6 +49,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     private TextView mEmptyTransaction;
     private static List<TransactionEntity> transactionsList;
     private TransactionsAdapter mTransactionsAdapter;
+    private TransactionModelView mTransactionModelView;
     public static final String[] longPressOptions = {getContext().getResources().getString(R.string.transaction_status), getContext().getResources().getString(R.string.transaction_delete)};
 
     @Override
@@ -226,11 +228,18 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                             mEmptyTransaction.setVisibility(View.GONE);
                             mTransactionsHistory.setVisibility(View.VISIBLE);
                             mTransactionsAdapter = new TransactionsAdapter(transactionsList);
+                            mTransactionModelView = ViewModelProviders.of(WalletActivity.this).get(TransactionModelView.class);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                             mTransactionsHistory.setLayoutManager(layoutManager);
                             mTransactionsHistory.setItemAnimator(new DefaultItemAnimator());
                             mTransactionsHistory.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
                             mTransactionsHistory.setAdapter(mTransactionsAdapter);
+                            mTransactionModelView.getAllTransactions().observe(WalletActivity.this, new Observer<List<TransactionEntity>>() {
+                                @Override
+                                public void onChanged(List<TransactionEntity> transactionEntities) {
+                                    mTransactionsAdapter.setData(transactionEntities);
+                                }
+                            });
                         }
                     }
                 });

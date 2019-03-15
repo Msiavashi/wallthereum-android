@@ -83,7 +83,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
                                         AsyncTask.execute(new Runnable() {
                                             @Override
                                             public void run() {
-                                                TransactionDB.getTransactionDB(WalletActivity.getContext()).transactionDAO().deleteSingleTransaction(transactionEntity);
+                                                 TransactionDB.getTransactionDB(WalletActivity.getContext()).transactionDAO().deleteSingleTransaction(transactionEntity);
                                             }
                                         });
                                         break;
@@ -98,9 +98,15 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         });
     }
 
+    public void setData(List<TransactionEntity> newData) {
+        this.transactionsList = newData;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return this.transactionsList.size();
     }
+
 
 }

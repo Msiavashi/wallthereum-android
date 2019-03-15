@@ -289,9 +289,9 @@ public class SendTransactionActivity extends AppCompatActivity {
                             mGasPrice.toBigInteger());
                     saveTransactionToDB(transactionReceipt, mAmount, mReceiverAddress, mGasLimit, mGasPrice);
                 } catch (ExecutionException e) {
-                    onTransactionFailed();
+                    onTransactionFailed(e);
                 } catch (InterruptedException e) {
-                    onTransactionFailed();
+                    onTransactionFailed(e);
                 }
             }
         });
@@ -308,12 +308,12 @@ public class SendTransactionActivity extends AppCompatActivity {
         });
     }
 
-    private void onTransactionFailed(){
+    private void onTransactionFailed(Exception e){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 findViewById(R.id.transaction_loading).setVisibility(View.GONE);
-                Toast.makeText(SendTransactionActivity.this, R.string.transaction_failed_toast, Toast.LENGTH_LONG).show();
+                Toast.makeText(SendTransactionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 

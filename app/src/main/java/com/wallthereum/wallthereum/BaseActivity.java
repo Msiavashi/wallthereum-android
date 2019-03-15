@@ -1,6 +1,7 @@
 package com.wallthereum.wallthereum;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -86,8 +87,11 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void onAboutClicked(MenuItem item) {
+        Intent intent = new Intent(BaseActivity.this, AboutAppActivity.class);
+        startActivity(intent);
+        mNavigationLayout.closeDrawer(GravityCompat.START);
     }
 
-    public void onBackupClicked(MenuItem item) {
-    }
+//    public void onBackupClicked(MenuItem item) {
+//    }
 }

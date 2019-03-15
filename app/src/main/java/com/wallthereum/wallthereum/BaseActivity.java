@@ -54,6 +54,7 @@ public class BaseActivity extends AppCompatActivity {
     private void initDrawerMenuItems() {
         this.mNavigationView.getMenu().getItem(2).setActionView(R.layout.drawer_menu_item_image);
         this.mNavigationView.getMenu().getItem(1).setActionView(R.layout.drawer_menu_item_image);
+        this.mNavigationView.getMenu().getItem(0).setActionView(R.layout.drawer_menu_item_image);
     }
 
     private void initToolbar(){

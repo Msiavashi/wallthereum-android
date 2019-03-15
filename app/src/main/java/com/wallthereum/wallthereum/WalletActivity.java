@@ -37,6 +37,7 @@ import org.web3j.utils.Convert;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -47,7 +48,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     private static final int EXTERNAL_STORAGE_WRITE_REQUEST_CODE = 1;
     private RecyclerView mTransactionsHistory;
     private TextView mEmptyTransaction;
-    private static List<TransactionEntity> transactionsList;
+    private static List<TransactionEntity> transactionsList = new ArrayList<>();
     private TransactionsAdapter mTransactionsAdapter;
     private TransactionModelView mTransactionModelView;
     public static final String[] longPressOptions = {getContext().getResources().getString(R.string.transaction_status), getContext().getResources().getString(R.string.transaction_delete)};
@@ -148,6 +149,13 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        // do some stuff here
+    }
+
     private void showTransactionDialog() {
         if(!Network.getNetwork().isInternetConnected(this)){
             Toast.makeText(this, R.string.connection_error, Toast.LENGTH_SHORT).show();
@@ -168,12 +176,6 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme)
                 .setTitle(R.string.address)
                 .setView(editText)
-                .setNegativeButton(R.string.reject, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.cancel();
-                    }
-                })
                 .setPositiveButton(R.string.copy, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -191,12 +193,6 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme)
                 .setTitle(R.string.private_key_dialog_title)
                 .setView(editText)
-                .setNegativeButton(R.string.reject, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.cancel();
-                    }
-                })
                 .setPositiveButton(R.string.copy, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {

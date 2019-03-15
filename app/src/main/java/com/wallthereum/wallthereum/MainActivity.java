@@ -47,6 +47,12 @@ public class MainActivity extends BaseActivity {
         this.mPasswordInput = findViewById(R.id.main_password_field);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        recreate();
+    }
+
     public void onClickNewWallet(View view) {
         final String password = mPasswordInput.getText().toString();
         if (password.isEmpty()){
@@ -213,7 +219,6 @@ public class MainActivity extends BaseActivity {
 
         alert.setNegativeButton(R.string.reject, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // what ever you want to do with No option.
                 dialog.cancel();
             }
         });
@@ -303,7 +308,6 @@ public class MainActivity extends BaseActivity {
 
         alert.setNegativeButton(R.string.reject, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // what ever you want to do with No option.
                 dialog.cancel();
             }
         });

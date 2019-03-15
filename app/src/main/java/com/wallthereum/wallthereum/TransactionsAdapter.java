@@ -37,6 +37,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         public TextView creationDate;
         public TextView receiverAddress;
         public TextView txnFee;
+        public TextView amount;
         public View v;
         public MyViewHolder(View view) {
             super(view);
@@ -44,6 +45,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
             hash = view.findViewById(R.id.item_hash);
             creationDate = view.findViewById(R.id.item_creation_date);
             receiverAddress = view.findViewById(R.id.item_receiver_address);
+            amount = view.findViewById(R.id.amount_text_view);
             txnFee = view.findViewById(R.id.item_fee);
         }
     }
@@ -63,6 +65,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         holder.receiverAddress.setText("receiver: " + transactionEntity.receiverAddress);
         holder.creationDate.setText(transactionEntity.createdAt.toString());
         holder.txnFee.setText("fee: " + fee.toString());
+        holder.amount.setText("transfer amount: " + transactionEntity.amount);
 
         holder.v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

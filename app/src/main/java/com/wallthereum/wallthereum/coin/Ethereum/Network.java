@@ -4,9 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.wallthereum.wallthereum.BaseActivity;
 import com.wallthereum.wallthereum.Exceptions.ConnectionException;
-import com.wallthereum.wallthereum.R;
+
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.Web3jFactory;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
@@ -75,22 +74,6 @@ public class Network {
 
     public static Network getNetwork() {
         return NetworkHolder.NETWORK;
-    }
-
-    public String[] getNames(){
-        return BaseActivity.getContext().getResources().getStringArray(R.array.networks_names);
-    }
-
-    public boolean changeNetwork(String name, String address, int chainId){
-        return true;
-    }
-
-    public String getmName() {
-        return mName;
-    }
-
-    public int getmChainId() {
-        return mChainId;
     }
 
     public String getmAddress() {

@@ -8,7 +8,6 @@
             <!--android:title="@string/invite" />-->
 
         <item
-            android:id="@+id/backup"
             android:icon="@drawable/baseline_backup_black_18dp"
             android:title="@string/backup" />
 
@@ -18,23 +17,19 @@
             <!--android:title="@string/settings" />-->
 
         <item
-            android:id="@+id/exchange"
             android:icon="@drawable/swao_48"
             android:title="@string/exchange" />
 
         <item
-            android:id="@+id/buy"
             android:icon="@drawable/buy_48"
             android:title="@string/buy_coin" />
 
         <item
-            android:id="@+id/about"
             android:onClick="onAboutClicked"
             android:icon="@drawable/baseline_info_black_18dp"
             android:title="@string/about" />
 
         <item
-            android:id="@+id/exit"
             android:onClick="onExitClicked"
             android:icon="@drawable/baseline_exit_to_app_black_18dp"
             android:title="@string/exit" />

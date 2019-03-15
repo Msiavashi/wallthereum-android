@@ -12,9 +12,6 @@ import android.widget.TextView;
 
 import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionDB;
 import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionEntity;
-import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
-
-import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

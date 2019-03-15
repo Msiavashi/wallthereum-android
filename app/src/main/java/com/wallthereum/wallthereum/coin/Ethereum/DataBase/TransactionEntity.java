@@ -1,7 +1,5 @@
 package com.wallthereum.wallthereum.coin.Ethereum.DataBase;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 
 import androidx.room.ColumnInfo;

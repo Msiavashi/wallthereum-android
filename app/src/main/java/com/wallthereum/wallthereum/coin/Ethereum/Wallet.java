@@ -2,12 +2,9 @@
 
 package com.wallthereum.wallthereum.coin.Ethereum;
 
-import android.util.Log;
-
 import com.wallthereum.wallthereum.Exceptions.ConnectionException;
 import com.wallthereum.wallthereum.Exceptions.InvalidPKException;
 import com.wallthereum.wallthereum.MainActivity;
-import com.wallthereum.wallthereum.R;
 
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
@@ -20,12 +17,9 @@ import org.web3j.protocol.core.methods.response.EthGetBalance;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.interfaces.ECKey;
-import java.security.interfaces.ECPrivateKey;
 import java.util.concurrent.ExecutionException;
 
 public class Wallet {

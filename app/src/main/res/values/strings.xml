@@ -45,7 +45,7 @@
     <string name="gas_limit_hint">gas limit</string>
     <string name="data_hint">data</string>
     <string name="create_transaction_button">create transaction</string>
-    <string name="transaction_form_title" >Transfer Information</string>
+    <string name="transaction_form_title">Transfer Information</string>
     <string name="gas_section_title">Gas</string>
     <string name="gas_price">Gas price</string>
     <string name="transaction_fee">Transaction fee</string>
@@ -72,4 +72,7 @@
     <string name="file_error_toast">file error</string>
     <string name="invalid_pk_toast">invalid private key</string>
     <string name="invalid_address">invalid address</string>
+    <string name="transaction_status">transaction status</string>
+    <string name="transaction_delete">delete</string>
+    <string name="transaction_failed_toast">Transaction Failed</string>
 </resources>

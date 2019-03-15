@@ -36,6 +36,8 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     private TextView mEmptyTransaction;
     private static List<TransactionEntity> transactionsList;
     private TransactionsAdapter mTransactionsAdapter;
+    public static final String[] longPressOptions = {getContext().getResources().getString(R.string.transaction_status), getContext().getResources().getString(R.string.transaction_delete)};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +86,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 showAddressDialog();
                 break;
             case R.id.keystore_button:
+                backupToGoogle();
                 break;
             case R.id.private_key_button:
                 showPKDialog();
@@ -91,6 +94,9 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
             default:
                 break;
         }
+    }
+
+    private void backupToGoogle() {
     }
 
     private void showTransactionDialog() {
@@ -109,7 +115,8 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     private void showAddressDialog() {
         final EditText editText = new EditText(this);
         editText.setText(Wallet.getWallet().getAddress().replace("0x", ""));
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+        editText.setBackgroundTintList(getResources().getColorStateList(R.color.black));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme)
                 .setTitle(R.string.address)
                 .setView(editText)
                 .setNegativeButton(R.string.reject, new DialogInterface.OnClickListener() {
@@ -131,7 +138,8 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     private void showPKDialog() {
         final EditText editText = new EditText(this);
         editText.setText(Wallet.getWallet().getEcKeyPair().getPrivateKey().toString(16));
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+        editText.setBackgroundTintList(getResources().getColorStateList(R.color.black));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme)
                 .setTitle(R.string.private_key_dialog_title)
                 .setView(editText)
                 .setNegativeButton(R.string.reject, new DialogInterface.OnClickListener() {

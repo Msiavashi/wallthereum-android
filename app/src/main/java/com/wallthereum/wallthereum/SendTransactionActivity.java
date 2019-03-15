@@ -289,11 +289,9 @@ public class SendTransactionActivity extends AppCompatActivity {
                             mGasPrice.toBigInteger());
                     saveTransactionToDB(transactionReceipt, mAmount, mReceiverAddress, mGasLimit, mGasPrice);
                 } catch (ExecutionException e) {
-                    e.printStackTrace();
+                    onTransactionFailed();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }finally {
-                    findViewById(R.id.transaction_loading).setVisibility(View.VISIBLE);
+                    onTransactionFailed();
                 }
             }
         });
@@ -309,6 +307,18 @@ public class SendTransactionActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void onTransactionFailed(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                findViewById(R.id.transaction_loading).setVisibility(View.GONE);
+                Toast.makeText(SendTransactionActivity.this, R.string.transaction_failed_toast, Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
     private void saveTransactionToDB(TransactionReceipt transactionReceipt, String amount, String receiverAddress, BigInteger gasLimit, BigDecimal gasPrice) {
         AsyncTask.execute(new Runnable() {
             @Override

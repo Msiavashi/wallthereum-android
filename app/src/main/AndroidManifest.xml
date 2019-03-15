@@ -13,19 +13,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WalletActivity" />
-        <activity android:name=".SendTransactionActivity"></activity>
+        <activity
+            android:name=".WalletActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SendTransactionActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".AboutAppActivity"></activity>
     </application>
 
 </manifest>

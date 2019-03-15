@@ -30,6 +30,8 @@ import java.util.concurrent.ExecutionException;
 
 public class Wallet {
     private Credentials credentials;
+    private String currentKeystoreAddress;
+
     private Wallet(){}
 
     public BigInteger getBalance() throws ExecutionException, InterruptedException {
@@ -39,6 +41,14 @@ public class Wallet {
                 .sendAsync()
                 .get();
         return ethGetBalance.getBalance();
+    }
+
+    public void setCurrentKeyStoreFile(String fileAddress) {
+        currentKeystoreAddress = fileAddress;
+    }
+
+    public String getCurrentKeystoreAddress(){
+        return currentKeystoreAddress;
     }
 
     private static class WalletHolder {

@@ -1,16 +1,25 @@
 package com.wallthereum.wallthereum;
 
+import androidx.core.app.ActivityCompat;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -21,17 +30,20 @@ import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionDB;
 import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionEntity;
 import com.wallthereum.wallthereum.coin.Ethereum.Network;
 import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
+
+import org.web3j.crypto.WalletUtils;
 import org.web3j.utils.Convert;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class WalletActivity extends BaseActivity implements View.OnClickListener{
+public class WalletActivity extends BaseActivity implements View.OnClickListener {
 
+    private static final int DIRECTORY_CHOOSER_REQUEST_CODE = 42;
     private static final String TAG = "Wallet Activity";
+    private static final int EXTERNAL_STORAGE_WRITE_REQUEST_CODE = 1;
     private RecyclerView mTransactionsHistory;
     private TextView mEmptyTransaction;
     private static List<TransactionEntity> transactionsList;
@@ -49,7 +61,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         this.initBalance();
     }
 
-    private void initBalance(){
+    private void initBalance() {
 //        set loading
         ProgressBar loading = findViewById(R.id.loading);
         loading.setVisibility(View.VISIBLE);
@@ -61,7 +73,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             loading.setVisibility(View.GONE);
         }
     }
@@ -74,11 +86,11 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
 
 
     @Override
-    public void onClick(View view){
+    public void onClick(View view) {
         /*
             Handling wallet panel fab oprions items onClick events
          */
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.send_button:
                 showTransactionDialog();
                 break;
@@ -86,7 +98,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 showAddressDialog();
                 break;
             case R.id.keystore_button:
-                backupToGoogle();
+                saveKeystoreAs();
                 break;
             case R.id.private_key_button:
                 showPKDialog();
@@ -96,7 +108,42 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    private void backupToGoogle() {
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        if (resultCode == RESULT_OK) {
+            Uri treeUri = resultData.getData();
+            String dstPath = StorageHelper.getFullPathFromTreeUri(treeUri, getContext());
+            Log.d(TAG,    dstPath + "/" + new File(Wallet.getWallet().getCurrentKeystoreAddress()).getName());
+            Log.d(TAG, Wallet.getWallet().getCurrentKeystoreAddress());
+            try {
+                StorageHelper.copyFileOrDirectory(Wallet.getWallet().getCurrentKeystoreAddress(),  dstPath);
+                Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show();
+            }catch (Exception e){
+                Toast.makeText(this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+            }
+            // List all existing files inside picked directory
+//            for (DocumentFile file : pickedDir.listFiles()) {
+//                Log.d(TAG, "Found file " + file.getName() + " with size " + file.length());
+//            }
+
+            // Create a new file and write into it
+//            DocumentFile newFile = pickedDir.createFile("text/plain", "My Novel");
+//            OutputStream out = getContentResolver().openOutputStream(newFile.getUri());
+//            out.write("A long time ago...".getBytes());
+//            out.close();
+        }
+    }
+
+    private void saveKeystoreAs() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG,"Permission is granted");
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                startActivityForResult(intent, DIRECTORY_CHOOSER_REQUEST_CODE);
+                return;
+            }else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_WRITE_REQUEST_CODE);
+            }
+        }
     }
 
     private void showTransactionDialog() {

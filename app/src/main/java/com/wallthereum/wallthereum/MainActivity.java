@@ -237,6 +237,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSelectedFilePaths(String[] files) {
                 //files is the array of the paths of files selected by the Application User.
+                Wallet.getWallet().setCurrentKeyStoreFile(files[0]);
                 unlockKeystore(files[0]);
             }
         });
@@ -251,7 +252,7 @@ public class MainActivity extends BaseActivity {
         }
         AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
         final EditText edittext = new EditText(this);
-        edittext.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        edittext.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         edittext.setBackgroundTintList(getResources().getColorStateList(R.color.black));
         edittext.setHint(R.string.hint_password);
         alert.setTitle(R.string.hint_password);

@@ -75,4 +75,9 @@
     <string name="transaction_status">transaction status</string>
     <string name="transaction_delete">delete</string>
     <string name="transaction_failed_toast">Transaction Failed</string>
+    <string name="directory_selected_label">select a directory</string>
+    <string name="none">none</string>
+    <string name="btn_choose">select</string>
+    <string name="saved">keystore saved</string>
+    <string name="save_failed">save failed</string>
 </resources>

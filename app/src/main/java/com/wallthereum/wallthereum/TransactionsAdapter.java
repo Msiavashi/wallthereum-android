@@ -73,14 +73,13 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which){
                                     case 0: // option[0]    see status
-                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://etherscan.io/tx/" + transactionEntity.transactionHash));
                                         startActivity(WalletActivity.getContext(), browserIntent, null);
                                         break;
                                     case 1: // option[1]    delete
                                         AsyncTask.execute(new Runnable() {
                                             @Override
                                             public void run() {
-                                                TransactionEntity transactionEntity = transactionsList.get(position);
                                                 TransactionDB.getTransactionDB(WalletActivity.getContext()).transactionDAO().deleteSingleTransaction(transactionEntity);
                                             }
                                         });

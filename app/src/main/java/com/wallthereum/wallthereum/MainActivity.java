@@ -103,19 +103,19 @@ public class MainActivity extends BaseActivity {
                         String path = wallet.create(password);
                         wallet.unlockKeystore(path, password);
                         Intent intent = new Intent(MainActivity.this, WalletActivity.class);
+                        intent.putExtra("new_wallet", true);
                         startActivity(intent);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 findViewById(R.id.loading).setVisibility(View.GONE);
-                                Toast.makeText(MainActivity.this, "Created", Toast.LENGTH_SHORT).show();
                             }
                         });
 
                     } catch (ConnectionException e) {
-                        Toast.makeText(MainActivity.this, "Network Problem", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, R.string.connection_error, Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Toast.makeText(MainActivity.this, R.string.file_error_toast, Toast.LENGTH_SHORT).show();
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     } catch (InvalidAlgorithmParameterException e) {
@@ -130,7 +130,7 @@ public class MainActivity extends BaseActivity {
                         @Override
                         public void run() {
                             findViewById(R.id.loading).setVisibility(View.GONE);
-                            Toast.makeText(MainActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, R.string.connection_error, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

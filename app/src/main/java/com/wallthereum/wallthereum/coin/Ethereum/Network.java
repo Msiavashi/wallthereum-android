@@ -24,8 +24,8 @@ import okhttp3.Response;
 
 public class Network {
     private String mName = "kovan";
-    private int mChainId = 42;
-    private String mAddress = "https://kovan.infura.io/v3/0f6aa93d937241f1aa67cb7ff365ce77";
+    private int mChainId = 1;
+    private String mAddress = "https://mainnet.infura.io/v3/0f6aa93d937241f1aa67cb7ff365ce77";
     private String gasStationAPI = "https://ethgasstation.info/json/ethgasAPI.json";
 
 

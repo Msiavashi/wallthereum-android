@@ -58,6 +58,13 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         this.initTransactionsHistory();
         this.initFab();
         this.initBalance();
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            if(extras.getBoolean("new_wallet")){
+                showNewWalletDialog();
+            }
+        }
     }
 
     private void initBalance() {
@@ -143,6 +150,20 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_WRITE_REQUEST_CODE);
             }
         }
+    }
+
+    public void showNewWalletDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(WalletActivity.getContext(), R.style.AlertDialogTheme)
+                .setTitle(R.string.read_carefully)
+                .setMessage(R.string.created_toast)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false);
+        builder.show();
     }
 
     @Override

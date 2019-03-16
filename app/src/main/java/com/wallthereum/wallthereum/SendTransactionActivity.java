@@ -311,7 +311,7 @@ public class SendTransactionActivity extends AppCompatActivity {
             @Override
             public void run() {
                 findViewById(R.id.transaction_loading).setVisibility(View.GONE);
-                Toast.makeText(SendTransactionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(SendTransactionActivity.this, e.getCause().getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 

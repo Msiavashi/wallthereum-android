@@ -64,4 +64,7 @@
     <string name="version">Version</string>
     <string name="license_description">2018-2019 Wallthereum Project.\nOpen Source Release.</string>
     <string name="github_link"><a href="https://github.com/Msiavashi/wallthereum-android">GITHUB</a></string>
+    <string name="wallthereum_wallets">walltehreum wallets</string>
+    <string name="device_storage">device storage</string>
+    <string name="select_key_file_using">select key file using</string>
 </resources>

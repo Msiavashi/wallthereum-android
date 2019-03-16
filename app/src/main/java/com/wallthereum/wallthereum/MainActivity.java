@@ -151,7 +151,7 @@ public class MainActivity extends BaseActivity {
                         unlockWithPK();
                         break;
                     case 1:     //options[1]
-                        getKeystoreFile();
+                        promptStorageSelection();
                         break;
                     default:
                         break;
@@ -228,15 +228,14 @@ public class MainActivity extends BaseActivity {
         alert.show();
     }
 
-    private void getKeystoreFile(){
+    private void getKeystoreFromApp(){
         DialogProperties properties = new DialogProperties();
         properties.selection_mode = DialogConfigs.SINGLE_MODE;
         properties.selection_type = DialogConfigs.FILE_SELECT;
         properties.root = new File(getFilesDir().getPath());
         properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
-        properties.offset = new File(DialogConfigs.DEFAULT_DIR);
         properties.extensions = new String[]{"json"};
-        final FilePickerDialog filePickerDialog = new FilePickerDialog(MainActivity.this,properties);
+        final FilePickerDialog filePickerDialog = new FilePickerDialog(MainActivity.this, properties);
         filePickerDialog.setTitle(R.string.select_file);
         filePickerDialog.setDialogSelectionListener(new DialogSelectionListener() {
             @Override
@@ -247,8 +246,49 @@ public class MainActivity extends BaseActivity {
             }
         });
         filePickerDialog.show();
-
     }
+
+    private void promptStorageSelection() {
+        String[] options = {getResources().getString(R.string.wallthereum_wallets), getResources().getString(R.string.device_storage)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                .setTitle(R.string.select_key_file_using)
+                .setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case 0:
+                                getKeystoreFromApp();
+                                break;
+                            case 1:
+                                getKeystoreFromDeviceStorage();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+        builder.show();
+    }
+
+    private void getKeystoreFromDeviceStorage() {
+        DialogProperties properties = new DialogProperties();
+        properties.selection_mode = DialogConfigs.SINGLE_MODE;
+        properties.selection_type = DialogConfigs.FILE_SELECT;
+        properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
+        properties.extensions = new String[]{"json"};
+        final FilePickerDialog filePickerDialog = new FilePickerDialog(MainActivity.this, properties);
+        filePickerDialog.setTitle(R.string.select_file);
+        filePickerDialog.setDialogSelectionListener(new DialogSelectionListener() {
+            @Override
+            public void onSelectedFilePaths(String[] files) {
+                //files is the array of the paths of files selected by the Application User.
+                Wallet.getWallet().setCurrentKeyStoreFile(files[0]);
+                unlockKeystore(files[0]);
+            }
+        });
+        filePickerDialog.show();
+    }
+
 
     private void unlockKeystore(final String filePath) {
         if(!Network.getNetwork().isInternetConnected(mContext)){

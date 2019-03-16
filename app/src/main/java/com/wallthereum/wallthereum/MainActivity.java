@@ -228,26 +228,6 @@ public class MainActivity extends BaseActivity {
         alert.show();
     }
 
-    private void getKeystoreFromApp(){
-        DialogProperties properties = new DialogProperties();
-        properties.selection_mode = DialogConfigs.SINGLE_MODE;
-        properties.selection_type = DialogConfigs.FILE_SELECT;
-        properties.root = new File(getFilesDir().getPath());
-        properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
-        properties.extensions = new String[]{"json"};
-        final FilePickerDialog filePickerDialog = new FilePickerDialog(MainActivity.this, properties);
-        filePickerDialog.setTitle(R.string.select_file);
-        filePickerDialog.setDialogSelectionListener(new DialogSelectionListener() {
-            @Override
-            public void onSelectedFilePaths(String[] files) {
-                //files is the array of the paths of files selected by the Application User.
-                Wallet.getWallet().setCurrentKeyStoreFile(files[0]);
-                unlockKeystore(files[0]);
-            }
-        });
-        filePickerDialog.show();
-    }
-
     private void promptStorageSelection() {
         String[] options = {getResources().getString(R.string.wallthereum_wallets), getResources().getString(R.string.device_storage)};
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
@@ -257,10 +237,10 @@ public class MainActivity extends BaseActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case 0:
-                                getKeystoreFromApp();
+                                getKeystoreFromPath(getFilesDir().getPath());
                                 break;
                             case 1:
-                                getKeystoreFromDeviceStorage();
+                                getKeystoreFromPath(DialogConfigs.DEFAULT_DIR);
                                 break;
                             default:
                                 break;
@@ -270,10 +250,11 @@ public class MainActivity extends BaseActivity {
         builder.show();
     }
 
-    private void getKeystoreFromDeviceStorage() {
+    private void getKeystoreFromPath(String path) {
         DialogProperties properties = new DialogProperties();
         properties.selection_mode = DialogConfigs.SINGLE_MODE;
         properties.selection_type = DialogConfigs.FILE_SELECT;
+        properties.root = new File(path);
         properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
         properties.extensions = new String[]{"json"};
         final FilePickerDialog filePickerDialog = new FilePickerDialog(MainActivity.this, properties);

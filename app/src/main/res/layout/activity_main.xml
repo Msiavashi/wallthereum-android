@@ -10,40 +10,41 @@
 
     <TextView
         android:id="@+id/main_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:fontFamily="@font/vast_shadow"
         android:text="@string/main_title"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.3" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="215dp"
         android:layout_height="149dp"
-        android:layout_marginTop="32dp"
         android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/main_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
-        android:focusableInTouchMode="true"
-        android:focusable="true"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:backgroundTint="@color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:theme="@style/TextInputStyle"
+        app:layout_constraintBottom_toTopOf="@+id/new_wallet_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_title">
@@ -51,7 +52,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/main_password_field"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:fontFamily="@font/open_sans"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
@@ -64,21 +65,22 @@
         android:id="@+id/new_wallet_button"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="@color/glass"
         android:elevation="5dp"
         android:fontFamily="@font/open_sans"
         android:onClick="onClickNewWallet"
         android:text="@string/new_wallet_button_text"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
     <Button
+        android:id="@+id/button"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="59dp"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="@color/bondi_blue"
         android:fontFamily="@font/open_sans"
         android:onClick="onUnlockExistingWalletClicked"
@@ -94,7 +96,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/main_view_subscript"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"

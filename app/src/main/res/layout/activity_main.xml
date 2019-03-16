@@ -63,7 +63,7 @@
 
     <Button
         android:id="@+id/new_wallet_button"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:backgroundTint="@color/glass"
@@ -78,7 +78,7 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="220dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:backgroundTint="@color/bondi_blue"

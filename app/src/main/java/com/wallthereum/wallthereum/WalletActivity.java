@@ -149,6 +149,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     public void onRestart()
     {
         super.onRestart();
+        initTransactionsHistory();
         // do some stuff here
     }
 
@@ -205,6 +206,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         clipboardManager.setPrimaryClip(clipData);
     }
 
+
     private void initTransactionsHistory(){
         AsyncTask.execute(new Runnable() {
             @Override
@@ -213,26 +215,26 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (transactionsList.isEmpty()){
-                            mEmptyTransaction.setVisibility(View.VISIBLE);
-                            mTransactionsHistory.setVisibility(View.GONE);
-                        }else {
-                            mEmptyTransaction.setVisibility(View.GONE);
-                            mTransactionsHistory.setVisibility(View.VISIBLE);
-                            mTransactionsAdapter = new TransactionsAdapter(transactionsList);
-                            mTransactionModelView = ViewModelProviders.of(WalletActivity.this).get(TransactionModelView.class);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                            mTransactionsHistory.setLayoutManager(layoutManager);
-                            mTransactionsHistory.setItemAnimator(new DefaultItemAnimator());
-                            mTransactionsHistory.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
-                            mTransactionsHistory.setAdapter(mTransactionsAdapter);
-                            mTransactionModelView.getAllTransactions().observe(WalletActivity.this, new Observer<List<TransactionEntity>>() {
-                                @Override
-                                public void onChanged(List<TransactionEntity> transactionEntities) {
-                                    mTransactionsAdapter.setData(transactionEntities);
+                        mTransactionsAdapter = new TransactionsAdapter(transactionsList);
+                        mTransactionModelView = ViewModelProviders.of(WalletActivity.this).get(TransactionModelView.class);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                        mTransactionsHistory.setLayoutManager(layoutManager);
+                        mTransactionsHistory.setItemAnimator(new DefaultItemAnimator());
+                        mTransactionsHistory.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+                        mTransactionsHistory.setAdapter(mTransactionsAdapter);
+                        mTransactionModelView.getAllTransactions().observe(WalletActivity.this, new Observer<List<TransactionEntity>>() {
+                            @Override
+                            public void onChanged(List<TransactionEntity> transactionEntities) {
+                                mTransactionsAdapter.setData(transactionEntities);
+                                if (transactionEntities == null || transactionsList.isEmpty()){
+                                    mEmptyTransaction.setVisibility(View.VISIBLE);
+                                    mTransactionsHistory.setVisibility(View.GONE);
+                                }else {
+                                    mEmptyTransaction.setVisibility(View.GONE);
+                                    mTransactionsHistory.setVisibility(View.VISIBLE);
                                 }
-                            });
-                        }
+                            }
+                        });
                     }
                 });
             }

@@ -59,7 +59,7 @@
     <string name="transaction_status">transaction status</string>
     <string name="transaction_delete">delete</string>
     <string name="saved">keystore saved</string>
-    <string name="save_failed">save failed</string>
+    <string name="save_failed">save failed!\nsave only on internal memory not SD card</string>
     <string name="version">Version</string>
     <string name="license_description">2018-2019 Wallthereum Project.\nOpen Source Release.</string>
     <string name="github_link"><a href="https://github.com/Msiavashi/wallthereum-android">GITHUB</a></string>

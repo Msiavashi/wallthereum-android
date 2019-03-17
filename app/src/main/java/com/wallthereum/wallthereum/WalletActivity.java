@@ -1,6 +1,7 @@
 package com.wallthereum.wallthereum;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -159,12 +160,12 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                     if (file.exists()){
                         Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show();
                     }else {
-                        Toast.makeText(this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.save_failed, Toast.LENGTH_LONG).show();
                     }
                 }
             }catch (Exception e){
                 Log.d(TAG, e.getMessage());
-                Toast.makeText(this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.save_failed, Toast.LENGTH_LONG).show();
             }
             // List all existing files inside picked directory
 //            for (DocumentFile file : pickedDir.listFiles()) {
@@ -193,7 +194,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Toast.makeText(WalletActivity.this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WalletActivity.this, R.string.save_failed, Toast.LENGTH_LONG).show();
                 }
             })
             .setPositiveButton(R.string.accept, null)
@@ -213,14 +214,14 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(WalletActivity.this, R.string.saved, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(WalletActivity.this, R.string.saved, Toast.LENGTH_LONG).show();
                                     }
                                 });
                             } catch (IOException e) {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(WalletActivity.this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(WalletActivity.this, R.string.save_failed, Toast.LENGTH_LONG).show();
                                     }
                                 });
 
@@ -228,7 +229,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(WalletActivity.this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(WalletActivity.this, R.string.save_failed, Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }finally {
@@ -242,9 +243,28 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         alert.show();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode)
+        {
+            case EXTERNAL_STORAGE_WRITE_REQUEST_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                    startActivityForResult(intent, DIRECTORY_CHOOSER_REQUEST_CODE);
+                } else
+                {
+                    Toast.makeText(getContext(), "The app was not allowed to write to your storage. Hence, it cannot function properly. Please consider granting it this permission", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+    }
+
     private void saveKeystoreAs() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 Log.v(TAG,"Permission is granted");
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                 startActivityForResult(intent, DIRECTORY_CHOOSER_REQUEST_CODE);

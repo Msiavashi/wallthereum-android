@@ -20,9 +20,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/open_sans"
         android:text="@string/main_title"
+        android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/version_text_view"
@@ -31,6 +33,7 @@
 
     <TextView
         android:id="@+id/version_text_view"
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -41,6 +44,7 @@
 
     <TextView
         android:id="@+id/license_text_view"
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"

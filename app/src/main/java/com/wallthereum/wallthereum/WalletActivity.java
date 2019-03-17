@@ -19,8 +19,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,9 +34,11 @@ import com.wallthereum.wallthereum.coin.Ethereum.DataBase.TransactionEntity;
 import com.wallthereum.wallthereum.coin.Ethereum.Network;
 import com.wallthereum.wallthereum.coin.Ethereum.Wallet;
 
+import org.web3j.crypto.CipherException;
 import org.web3j.utils.Convert;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -140,12 +145,25 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         if (resultCode == RESULT_OK) {
             Uri treeUri = resultData.getData();
             String dstPath = StorageHelper.getFullPathFromTreeUri(treeUri, getContext());
-            Log.d(TAG,    dstPath + "/" + new File(Wallet.getWallet().getCurrentKeystoreAddress()).getName());
-            Log.d(TAG, Wallet.getWallet().getCurrentKeystoreAddress());
+            grantUriPermission(getPackageName(), treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             try {
-                StorageHelper.copyFileOrDirectory(Wallet.getWallet().getCurrentKeystoreAddress(),  dstPath);
-                Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show();
+
+                if(Wallet.getWallet().getCurrentKeystoreAddress() == null){
+//                    the wallet unlocked with a private key
+                    createWalletForPK(dstPath);
+                }else{
+//                    file unlocked with a keystore
+                    StorageHelper.copyFileOrDirectory(Wallet.getWallet().getCurrentKeystoreAddress(),  dstPath);
+                    File file = new File(dstPath + File.separator + new File(Wallet.getWallet().getCurrentKeystoreAddress()).getName());
+                    if (file.exists()){
+                        Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+                    }
+                }
             }catch (Exception e){
+                Log.d(TAG, e.getMessage());
                 Toast.makeText(this, R.string.save_failed, Toast.LENGTH_SHORT).show();
             }
             // List all existing files inside picked directory
@@ -159,6 +177,69 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
 //            out.write("A long time ago...".getBytes());
 //            out.close();
         }
+    }
+
+    private void createWalletForPK(String dstPath) {
+        final EditText edittext = new EditText(this);
+        edittext.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        edittext.setBackgroundTintList(getResources().getColorStateList(R.color.black));
+        edittext.setHint(R.string.hint_password);
+        edittext.setGravity(Gravity.LEFT);                  //TODO: remove this for RTL support
+        edittext.setTextDirection(View.TEXT_DIRECTION_LTR);     //TODO: remove this for RTL
+        AlertDialog alert = new AlertDialog.Builder(this, R.style.AlertDialogTheme)
+            .setTitle(R.string.hint_password)
+            .setView(edittext)
+            .setNegativeButton(R.string.reject, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    Toast.makeText(WalletActivity.this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+                }
+            })
+            .setPositiveButton(R.string.accept, null)
+            .create();
+        alert.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button button = ((AlertDialog) alert).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(edittext.getText().toString().length() < MainActivity.mMinimumPasswordLength){
+                            edittext.setError(getResources().getString(R.string.password_length_input_error));
+                        }else {
+                            try {
+                                Wallet.getWallet().createAndSaveWalletFromPK(dstPath, edittext.getText().toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(WalletActivity.this, R.string.saved, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } catch (IOException e) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(WalletActivity.this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            } catch (CipherException e) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(WalletActivity.this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }finally {
+                                dialog.dismiss();
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        alert.show();
     }
 
     private void saveKeystoreAs() {

@@ -33,12 +33,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.GravityCompat;
 
 public class MainActivity extends BaseActivity {
 
     private final String TAG = "MainActivity";
     private TextInputEditText mPasswordInput;
-    private int mMinimumPasswordLength = 8;
+    public static int mMinimumPasswordLength = 8;
     public static Context mContext;
 
     @Override
@@ -167,6 +168,8 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(this, R.string.connection_error, Toast.LENGTH_SHORT).show();
             return;
         }
+
+        Wallet.getWallet().setCurrentKeyStoreFile(null);
         AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
         final EditText edittext = new EditText(this);
         edittext.setBackgroundTintList(getResources().getColorStateList(R.color.black));
@@ -174,6 +177,7 @@ public class MainActivity extends BaseActivity {
         edittext.setHint(R.string.hint_private_key);
         alert.setTitle(R.string.private_key_dialog_title);
         alert.setView(edittext);
+        alert.setCancelable(false);
         alert.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 findViewById(R.id.loading).setVisibility(View.VISIBLE);
@@ -281,6 +285,8 @@ public class MainActivity extends BaseActivity {
         edittext.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         edittext.setBackgroundTintList(getResources().getColorStateList(R.color.black));
         edittext.setHint(R.string.hint_password);
+        edittext.setGravity(Gravity.LEFT);                  //TODO: remove this for RTL support
+        edittext.setTextDirection(View.TEXT_DIRECTION_LTR);     //TODO: remove this for RTL
         alert.setTitle(R.string.hint_password);
         alert.setView(edittext);
         alert.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {

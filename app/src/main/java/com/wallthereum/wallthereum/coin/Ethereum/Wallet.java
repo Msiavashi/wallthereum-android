@@ -45,6 +45,11 @@ public class Wallet {
         return currentKeystoreAddress;
     }
 
+    public void createAndSaveWalletFromPK(String dstPath, String password) throws CipherException, IOException {
+        ECKeyPair ecKeyPair = Wallet.getWallet().getEcKeyPair();
+        WalletUtils.generateWalletFile(password, ecKeyPair, new File(dstPath), false);
+    }
+
     private static class WalletHolder {
         private static Wallet wallet = new Wallet();
     }
@@ -70,6 +75,7 @@ public class Wallet {
         }
         String filename = WalletUtils.generateNewWalletFile(password, new File(internalStorage, "wallets"), false);
         String fullPath = internalStorage.getAbsolutePath() + "/wallets/" + filename;
+        setCurrentKeyStoreFile(fullPath);
         return fullPath;
     }
 

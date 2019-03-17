@@ -27,9 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
         app:cardCornerRadius="2dp"
         app:cardElevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -46,20 +44,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
                 android:textAlignment="center"
+                app:layout_constraintBottom_toTopOf="@+id/button3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
+                app:layout_constraintVertical_bias="0.050000012" />
 
             <Spinner
                 android:id="@+id/gas_price_spinner"
                 style="?android:attr/spinnerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/textInputLayout3"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider" />
+                app:layout_constraintHorizontal_bias="0.95"
+                app:layout_constraintStart_toEndOf="@+id/gas_price_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/divider"
+                app:layout_constraintVertical_bias="0.95" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout3"
@@ -68,6 +75,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/transaction_fee_text_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/gas_price_text_view">
@@ -119,6 +127,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
@@ -167,6 +176,7 @@
                 android:fontFamily="@font/open_sans"
                 android:text="@string/gas_section_title"
                 android:textColor="@color/date"
+                app:layout_constraintBottom_toTopOf="@+id/divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
 
@@ -183,7 +193,6 @@
                 android:id="@+id/button3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
                 android:backgroundTint="@color/design_default_color_primary"
                 android:fontFamily="@font/open_sans"
                 android:onClick="onCreateTransactionClicked"
@@ -193,8 +202,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/transaction_fee_text_view" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -205,12 +213,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:translationZ="10dp"
         android:background="@color/dialogplus_black_overlay"
         android:clickable="true"
         android:focusable="true"
         android:indeterminate="true"
         android:indeterminateDrawable="@drawable/progressbar_circular"
+        android:translationZ="10dp"
         android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

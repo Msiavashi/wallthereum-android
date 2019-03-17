@@ -1,9 +1,12 @@
 package com.wallthereum.wallthereum;
 
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +15,7 @@ public class AboutAppActivity extends AppCompatActivity {
 
     private TextView mLicenceText;
     private TextView mVersionText;
-    private TextView mGithubText;
+    private String mGithubRepositoryAddress = "https://github.com/Msiavashi/wallthereum-android";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +23,6 @@ public class AboutAppActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about_app);
         this.mLicenceText = findViewById(R.id.license_text_view);
         this.mVersionText = findViewById(R.id.version_text_view);
-        this.mGithubText = findViewById(R.id.github_text_view);
         initTextViews();
     }
 
@@ -34,9 +36,11 @@ public class AboutAppActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         mLicenceText.setText(R.string.license_description);
-        mGithubText.setText(Html.fromHtml(getResources().getString(R.string.github_link)));
-        mGithubText.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
     }
 
 
+    public void githubButtonOnClick(View view) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mGithubRepositoryAddress));
+        startActivity(browserIntent);
+    }
 }

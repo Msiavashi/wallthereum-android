@@ -7,7 +7,7 @@
     <string name="new_wallet_button_text">create wallet</string>
     <string name="unlock_wallet_button">unlock existing wallet</string>
     <string name="main_view_subscript">Open Source Wallthereum Project.</string>
-    <string name="backup">Backup keystores</string>
+    <string name="backup">Backup Keystores</string>
     <string name="about">About</string>
     <string name="exit">Exit</string>
     <string name="accept">accept</string>
@@ -49,8 +49,8 @@
     <string name="sending_transaction">sending transaction ...</string>
     <string name="empty_password_error">Please enter a password</string>
     <string name="password_length_input_error">Password must be at least 8 characters</string>
-    <string name="exchange">exchange coin</string>
-    <string name="buy_coin">buy coin</string>
+    <string name="exchange">Exchange Coins</string>
+    <string name="buy_coin">Buy Coin</string>
     <string name="soon">soon</string>
     <string name="connection_error">network error</string>
     <string name="decryption_error_toast">wrong password</string>

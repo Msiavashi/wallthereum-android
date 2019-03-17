@@ -50,16 +50,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-    <TextView
-        android:id="@+id/github_text_view"
+    <Button
+        android:id="@+id/button2"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/open_sans"
+        android:onClick="githubButtonOnClick"
+        android:text="Button"
         android:textAlignment="center"
-        android:textAllCaps="true"
+        android:textAppearance="@style/Base.TextAppearance.MaterialComponents.Button"
         android:textColor="@color/color_alizarin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/license_text_view" />
+        app:layout_constraintTop_toBottomOf="@+id/license_text_view"
+        tools:text="@string/github_link" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

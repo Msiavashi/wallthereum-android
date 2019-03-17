@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -48,6 +49,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     private TransactionsAdapter mTransactionsAdapter;
     private TransactionModelView mTransactionModelView;
     public static final String[] longPressOptions = {getContext().getResources().getString(R.string.transaction_status), getContext().getResources().getString(R.string.transaction_delete)};
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,26 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 showNewWalletDialog();
             }
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to logout", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
     private void initBalance() {

@@ -35,7 +35,6 @@
     <string name="gas_limit_hint">gas limit</string>
     <string name="create_transaction_button">create transaction</string>
     <string name="transaction_form_title">Transfer Information</string>
-    <string name="gas_section_title">Gas Information</string>
     <string name="gas_price">Gas price</string>
     <string name="transaction_fee">Transaction fee</string>
     <string name="gas_limit_error">minimum gas limit is 21000</string>
@@ -70,5 +69,4 @@
     <string name="created_toast">account created and saved under wallthereum wallets.\nUse UNLOCK EXISTING WALLET -> UNLOCK USING KEYSTORE FILE -> WALLTHEREUM WALLETS to unlock wallet next time.\n\nPlease make sure you have a backup of both your keystore file and private key using menu button under this page.\nFor security purpose, deleting the application will cause all your keystores to be removed, keeping your backup in a safe place using the menu button below is your responsibility.\n\nRegards,\nWallthereum Team.</string>
     <string name="read_carefully">Read Carefully</string>
     <string name="ok">ok</string>
-    <string name="new_transaction_title">New Transaction</string>
 </resources>

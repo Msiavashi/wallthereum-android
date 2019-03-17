@@ -3,6 +3,7 @@ package com.wallthereum.wallthereum;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -70,6 +71,8 @@ public class SendTransactionActivity extends AppCompatActivity {
         initToolbar();
         initGasPrice();
     }
+
+
 
     private void initSendAgreementCheckListener() {
         this.mSendAgreementCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
